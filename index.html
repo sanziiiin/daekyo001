@@ -19,7 +19,6 @@
     const { useState, useRef, Fragment } = React;
 
     const GRADES = ["중1-1", "중1-2", "중2-1", "중3-1"];
-    const SUBJECTS = ["국어"];
     const HOURS = ["1학년 2호", "1학년 11호", "2학년 3호"];
     const OCR_DUMMY = "나는 아침 창가에 스며드는 햇살이다\n고양이의 숨결처럼 포근하게 내려앉는다\n차가운 방을 부드럽게 깨우는 손길이다\n나는 마음을 비추는 작은 등불이다\n어둠 속에서도 길을 찾게 하는 빛이다\n희망을 나누는 따뜻한 말 한마디다\n나는 세상을 어루만지는 노래다\n금빛 물결처럼 거리 위에 번져 간다\n지친 하루를 감싸는 이불이다\n내일을 향해 다시 걷게 하는 힘이다";
 
@@ -96,16 +95,6 @@
       );
     }
 
-    function ImageModal({ src, onClose }) {
-      return (
-        <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <div onClick={e => e.stopPropagation()} style={{ position: "relative", maxWidth: "90%", maxHeight: "90%" }}>
-            <button onClick={onClose} style={{ position: "absolute", top: -40, right: 0, background: "#fff", border: "none", borderRadius: "50%", width: 32, height: 32, cursor: "pointer", fontSize: 18, color: "#111827", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
-            <img src={src} style={{ maxWidth: "100%", maxHeight: "80vh", borderRadius: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }} alt="확대 이미지" />
-          </div>
-        </div>
-      );
-    }
 
     const RUBRIC_POEM = [
       { label: "자기 표현", score: 30 },
@@ -153,9 +142,7 @@
       );
     }
 
-    function StatusBadge({ status }) {
-      return <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700, color: SC[status], background: SB[status] }}>{SL[status]}</span>;
-    }
+
 
     function Sel({ value, onChange, options, placeholder = "전체" }) {
       return (
@@ -183,9 +170,8 @@
       const [ocrLoading, setOcrLoading] = useState(false);
       const [isDirty, setIsDirty] = useState(false);
       const [showCam, setShowCam] = useState(false);
-      const [showImageModal, setShowImageModal] = useState(false);
+      const [imageExpanded, setImageExpanded] = useState(false);
       const [fGrade, setFGrade] = useState("");
-      const [fSubject, setFSubject] = useState("");
       const [fHour, setFHour] = useState("");
       const [fStatus, setFStatus] = useState("");
       const [onlyDone, setOnlyDone] = useState(false);
@@ -222,8 +208,8 @@
       const tryLeave = () => { if (isDirty) setModal({ type: "leave" }); else setPage("home"); };
       const confirmLeave = () => { setModal(null); setPage("home"); };
 
-      const hasFilter = fGrade || fSubject || fHour || fStatus;
-      const filtered = list.filter(r => (!fGrade || r.grade === fGrade) && (!fSubject || r.subject === fSubject) && (!fHour || r.hour === fHour) && (!fStatus || r.status === fStatus) && (!onlyDone || r.status === "done"));
+      const hasFilter = fGrade || fHour || fStatus;
+      const filtered = list.filter(r => (!fGrade || r.grade === fGrade) && (!fHour || r.hour === fHour) && (!fStatus || r.status === fStatus) && (!onlyDone || r.status === "done"));
       const editItem = list.find(r => r.id === editId) || list[1];
       const resultItem = list.find(r => r.id === resultId) || list.find(r => r.status === "done") || list[0];
       const showVersionTabs = resultItem && resultItem.modifyUsed && resultItem.prevScore;
@@ -478,16 +464,15 @@
               <button onClick={() => setPage("intro")} style={{ padding: "8px 14px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#6B7280", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>← 처음으로</button>
             </div>
             <div style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
                 <Sel value={fGrade} onChange={setFGrade} options={GRADES} placeholder="학년" />
-                <Sel value={fSubject} onChange={setFSubject} options={SUBJECTS} placeholder="과목" />
                 <Sel value={fHour} onChange={setFHour} options={HOURS} placeholder="호" />
                 <Sel value={fStatus} onChange={setFStatus} options={Object.keys(SL)} placeholder="제출상태" />
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <input type="checkbox" checked={onlyDone} onChange={e => setOnlyDone(e.target.checked)} id="onlyDone" style={{ width: 16, height: 16, cursor: "pointer" }} />
                 <label htmlFor="onlyDone" style={{ fontSize: 13, color: D3, cursor: "pointer" }}>결과서만 보기</label>
-                {hasFilter && <button onClick={() => { setFGrade(""); setFSubject(""); setFHour(""); setFStatus(""); setOnlyDone(false); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
+                {hasFilter && <button onClick={() => { setFGrade(""); setFHour(""); setFStatus(""); setOnlyDone(false); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
               </div>
             </div>
             {filtered.length === 0 ? (
@@ -495,32 +480,131 @@
                 <p style={{ fontSize: 14, color: "#9CA3AF", margin: 0 }}>조건에 맞는 과제가 없습니다</p>
               </div>
             ) : (
-              filtered.map(item => (
-                <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                  <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
-                    {[item.publisher, item.grade, item.hour, item.unit].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
+              filtered.map(item => {
+                const formatDate = (dateStr) => {
+                  if (!dateStr) return null;
+                  const [date, time] = dateStr.split(' ');
+                  const [y, m, d] = date.split('-');
+                  return `${y}.${m}.${d} ${time}`;
+                };
+                const canWrite = item.status === "draft" || item.status === "writing";
+                const canResult = item.status === "done";
+                const canRewrite = item.status === "done" && !item.modifyUsed;
+                const hasRewrite = item.status === "done" && item.modifyUsed;
+
+                return (
+                  <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                    <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
+                      {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
+                    </div>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 8px", lineHeight: 1.4 }}>{item.title}</p>
+                    
+                    {/* 날짜 정보 표시 */}
+                    <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+                      {item.submitAt && (
+                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                          제출일: {formatDate(item.submitAt)}
+                        </span>
+                      )}
+                      {item.evalAt && (
+                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                          평가일: {formatDate(item.evalAt)}
+                        </span>
+                      )}
+                      {item.modifiedAt && (
+                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                          수정일: {formatDate(item.modifiedAt)}
+                        </span>
+                      )}
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ fontSize: 12, fontWeight: 700, color: SC[item.status], background: SB[item.status], padding: "3px 10px", borderRadius: 20 }}>
+                          {SL[item.status]}
+                        </span>
+                        {item.status === "done" && item.score && (
+                          <span style={{ fontSize: 12, fontWeight: 700, color: SC.done }}>{item.score}</span>
+                        )}
+                      </div>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        {canWrite && (
+                          <button
+                            onClick={() => goWrite(item, false)}
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: 8,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              border: "none",
+                              background: "#2563EB",
+                              color: "#fff",
+                              whiteSpace: "nowrap"
+                            }}
+                          >
+                            {item.status === "writing" ? "이어쓰기" : "작성하기"}
+                          </button>
+                        )}
+                        {canRewrite && (
+                          <button
+                            onClick={() => goWrite(item, true)}
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: 8,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              border: "1.5px solid #2563EB",
+                              background: "#fff",
+                              color: "#2563EB",
+                              whiteSpace: "nowrap"
+                            }}
+                          >
+                            고쳐쓰기
+                          </button>
+                        )}
+                        {hasRewrite && (
+                          <button
+                            onClick={() => { setResultId(item.id); setResultTab("original"); setPage("result"); }}
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: 8,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              border: "1.5px solid #2563EB",
+                              background: "#fff",
+                              color: "#2563EB",
+                              whiteSpace: "nowrap"
+                            }}
+                          >
+                            1차 결과서
+                          </button>
+                        )}
+                        {canResult && (
+                          <button
+                            onClick={() => { setResultId(item.id); setResultTab(hasRewrite ? "rewrite" : "original"); setPage("result"); }}
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: 8,
+                              fontSize: 12,
+                              fontWeight: 600,
+                              cursor: "pointer",
+                              border: "none",
+                              background: "#2563EB",
+                              color: "#fff",
+                              whiteSpace: "nowrap"
+                            }}
+                          >
+                            결과서 보기
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 10 }}>
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: D, margin: 0, flex: 1, lineHeight: 1.4 }}>{item.title}</h3>
-                    <StatusBadge status={item.status} />
-                  </div>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    {item.status === "draft" && <Btn label="작성하기" onClick={() => goWrite(item, false)} variant="primary" style={{ flex: 1 }} />}
-                    {item.status === "writing" && (
-                      <>
-                        <Btn label="이어쓰기" onClick={() => goWrite(item, false)} variant="secondary" style={{ flex: 1 }} />
-                        <Btn label="제출하기" onClick={() => goWrite(item, false)} variant="primary" style={{ flex: 1 }} />
-                      </>
-                    )}
-                    {item.status === "done" && (
-                      <>
-                        {!item.modifyUsed && <Btn label="고쳐쓰기" onClick={() => goWrite(item, true)} variant="secondary" style={{ flex: 1 }} />}
-                        <Btn label="결과서 보기" onClick={() => { setResultId(item.id); setResultTab("original"); setPage("result"); }} variant="primary" style={{ flex: 1 }} />
-                      </>
-                    )}
-                  </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
@@ -531,7 +615,6 @@
         <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
           {toast && <Toast msg={toast} />}
           {modal?.type === "leave" && <ConfirmModal title="저장되지 않은 내용이 있어요" msg="저장하지 않고 나가면 변경사항이 사라집니다." confirmLabel="나가기" confirmColor="#EF4444" onConfirm={confirmLeave} onCancel={() => setModal(null)} />}
-          {showImageModal && <ImageModal src={image} onClose={() => setShowImageModal(false)} />}
           <div style={{ maxWidth: 768, margin: "0 auto" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
               <button onClick={tryLeave} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 20, color: D3, padding: 0 }}>←</button>
@@ -562,10 +645,10 @@
                 </div>
                 {image ? (
                   <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
-                    <div onClick={() => setShowImageModal(true)} style={{ width: 72, height: 72, borderRadius: 12, background: "#E8F0FE", border: "2px solid #C7D7FB", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                    <div onClick={() => setImageExpanded(v => !v)} style={{ width: 72, height: 72, borderRadius: 12, background: "#E8F0FE", border: "2px solid #C7D7FB", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
                       <svg viewBox="0 0 72 72" style={{ width: 72, height: 72, borderRadius: 10 }}><rect width="72" height="72" fill="#E8F0FE" rx="10" /><rect x="8" y="8" width="56" height="56" rx="6" fill="#C7D7FB" /><circle cx="26" cy="28" r="7" fill="#93B4F8" /><polygon points="8,64 28,38 42,52 54,36 64,64" fill="#6B9CF6" /></svg>
                     </div>
-                    <button onClick={() => { setImage(null); setIsDirty(true); }} style={{ position: "absolute", top: -6, right: -6, width: 20, height: 20, borderRadius: "50%", background: "#EF4444", border: "none", color: "#fff", fontSize: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+                    <button onClick={() => { setImage(null); setIsDirty(true); setImageExpanded(false); }} style={{ position: "absolute", top: -6, right: -6, width: 20, height: 20, borderRadius: "50%", background: "#EF4444", border: "none", color: "#fff", fontSize: 10, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
                   </div>
                 ) : (
                   <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", height: 72, borderRadius: 10, background: B }}>
@@ -573,7 +656,26 @@
                   </div>
                 )}
               </div>
-              {image && <p style={{ fontSize: 11, color: "#3B82F6", margin: "8px 0 0", textAlign: "center" }}>💡 이미지를 클릭하면 확대해서 볼 수 있습니다</p>}
+              {image && !imageExpanded && (
+                <p style={{ fontSize: 11, color: "#3B82F6", margin: "8px 0 0", textAlign: "center" }}>💡 이미지를 클릭하면 확대해서 볼 수 있습니다</p>
+              )}
+              {image && imageExpanded && (
+                <div style={{ marginTop: 16, padding: 16, background: "#F9FAFB", borderRadius: 12, border: "1px solid #E5E7EB" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: D2, margin: 0 }}>🖼️ 촬영한 이미지</p>
+                    <button onClick={() => setImageExpanded(false)} style={{ padding: "4px 10px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 6, fontSize: 11, fontWeight: 600, color: D3, cursor: "pointer" }}>접기</button>
+                  </div>
+                  <div style={{ width: "100%", maxHeight: "60vh", overflow: "auto", borderRadius: 8, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: 12 }}>
+                    <svg viewBox="0 0 400 300" style={{ width: "100%", height: "auto", maxWidth: 600 }}>
+                      <rect width="400" height="300" fill="#E8F0FE" rx="8" />
+                      <rect x="20" y="20" width="360" height="260" rx="6" fill="#C7D7FB" />
+                      <circle cx="140" cy="120" r="35" fill="#93B4F8" />
+                      <polygon points="20,280 140,160 220,220 300,140 380,280" fill="#6B9CF6" />
+                      <text x="200" y="150" textAnchor="middle" fill="#2563EB" fontSize="16" fontWeight="600">촬영된 이미지</text>
+                    </svg>
+                  </div>
+                </div>
+              )}
             </div>
             <div style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)", marginBottom: 16 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: D2, margin: "0 0 12px" }}>🎨 편집 옵션</p>
@@ -639,28 +741,353 @@
 
       // ── RESULT ──
       if (page === "result") {
+        const currentScore = resultTab === "rewrite" && resultItem.modifyUsed ? resultItem.score : resultItem.score;
+        const displayScore = currentScore ? parseInt(currentScore) : 72;
+        
         return (
-          <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
+          <div style={{ background: "linear-gradient(to bottom, #F9FAFB 0%, #FFFFFF 100%)", minHeight: "100vh", padding: "20px" }}>
             <div style={{ maxWidth: 768, margin: "0 auto" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <button onClick={() => setPage("home")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 20, color: D3, padding: 0 }}>←</button>
-                <h1 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>결과서</h1>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                <button onClick={() => setPage("home")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 22, color: "#1F2937", padding: 0, transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "#3B82F6"} onMouseLeave={e => e.target.style.color = "#1F2937"}>←</button>
+                <div>
+                  <h1 style={{ fontSize: 22, fontWeight: 800, color: "#111827", margin: 0, letterSpacing: "-0.5px" }}>평가 결과서</h1>
+                  <p style={{ fontSize: 12, color: "#6B7280", margin: "2px 0 0" }}>AI 평가 기반 상세 분석 리포트</p>
+                </div>
               </div>
+              
               {showVersionTabs && (
-                <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-                  <button onClick={() => setResultTab("original")} style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: resultTab === "original" ? "#2563EB" : "#fff", color: resultTab === "original" ? "#fff" : D3, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>1차 결과서</button>
-                  <button onClick={() => setResultTab("rewrite")} style={{ flex: 1, padding: "10px", borderRadius: 10, border: "none", background: resultTab === "rewrite" ? "#2563EB" : "#fff", color: resultTab === "rewrite" ? "#fff" : D3, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>고쳐쓰기 결과서</button>
+                <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+                  <button onClick={() => setResultTab("original")} style={{ flex: 1, padding: "12px", borderRadius: 8, border: resultTab === "original" ? "2px solid #3B82F6" : "1px solid #D1D5DB", background: resultTab === "original" ? "#3B82F6" : "#fff", color: resultTab === "original" ? "#fff" : "#374151", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", boxShadow: resultTab === "original" ? "0 2px 8px rgba(59,130,246,0.25)" : "none" }}>📄 1차 결과서</button>
+                  <button onClick={() => setResultTab("rewrite")} style={{ flex: 1, padding: "12px", borderRadius: 8, border: resultTab === "rewrite" ? "2px solid #3B82F6" : "1px solid #D1D5DB", background: resultTab === "rewrite" ? "#3B82F6" : "#fff", color: resultTab === "rewrite" ? "#fff" : "#374151", fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", boxShadow: resultTab === "rewrite" ? "0 2px 8px rgba(59,130,246,0.25)" : "none" }}>✏️ 고쳐쓰기 결과서</button>
                 </div>
               )}
-              <div style={{ background: "#fff", borderRadius: 12, padding: 20, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                <div style={{ textAlign: "center", padding: "40px 20px" }}>
-                  <div style={{ width: 120, height: 120, borderRadius: "50%", background: "#EFF6FF", margin: "0 auto 20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 48, fontWeight: 800, color: "#2563EB" }}>72</span>
+
+              {/* 섹션1: 헤더 정보 */}
+              <div style={{ border: "1px solid #E5E7EB", borderRadius: 12, padding: 20, marginBottom: 20, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, paddingBottom: 12, borderBottom: "2px solid #F3F4F6" }}>
+                  <span style={{ fontSize: 18, fontWeight: 700 }}>📋</span>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: 0 }}>기본 정보</h3>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 24px", fontSize: 13 }}>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>출판사, 호</span>
+                    <span style={{ color: "#111827", fontWeight: 600 }}>{resultItem.publisher} {resultItem.hour}</span>
                   </div>
-                  <p style={{ fontSize: 18, fontWeight: 700, color: D, margin: "0 0 8px" }}>평가가 완료되었습니다</p>
-                  <p style={{ fontSize: 14, color: D3, margin: 0 }}>상세한 분석 결과를 확인하세요</p>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>과제명</span>
+                    <span style={{ color: "#111827", fontWeight: 600 }}>{resultItem.title}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>학생명</span>
+                    <span style={{ color: "#111827", fontWeight: 600 }}>김대교</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>교사명</span>
+                    <span style={{ color: "#111827", fontWeight: 600 }}>이써밋</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>제품명</span>
+                    <span style={{ color: "#111827", fontWeight: 600 }}>써밋 중등교과 수행평가</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", padding: "8px 0" }}>
+                    <span style={{ color: "#6B7280", minWidth: 90, fontSize: 12 }}>발행일</span>
+                    <span style={{ color: "#3B82F6", fontWeight: 600 }}>{resultItem.evalAt || "2026.04.12 14:00"}</span>
+                  </div>
                 </div>
               </div>
+
+              {/* 섹션2 + 섹션3: 종합평가 + 항목별평가 (좌우 배치) */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+                {/* 섹션2: 종합평가 (좌측) */}
+                <div style={{ border: "2px solid #3B82F6", borderRadius: 12, padding: 20, background: "#fff", boxShadow: "0 2px 8px rgba(59,130,246,0.15)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                    <span style={{ fontSize: 18 }}>⭐</span>
+                    <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111827", margin: 0 }}>종합 평가</h3>
+                  </div>
+                  <div style={{ marginBottom: 18 }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 10 }}>
+                      <span style={{ fontSize: 48, fontWeight: 800, color: "#3B82F6", lineHeight: 1 }}>{displayScore}</span>
+                      <span style={{ fontSize: 18, color: "#6B7280", fontWeight: 600 }}>/ 100점</span>
+                    </div>
+                    <div style={{ position: "relative", width: "100%", height: 24, background: "#E5E7EB", borderRadius: 12, overflow: "hidden" }}>
+                      <div style={{ position: "absolute", width: `${displayScore}%`, height: "100%", background: "linear-gradient(90deg, #3B82F6 0%, #2563EB 100%)", borderRadius: 12, transition: "width 0.5s ease" }} />
+                      <div style={{ position: "absolute", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: displayScore > 50 ? "#fff" : "#374151" }}>{displayScore}%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ background: "#F0F9FF", padding: 14, borderRadius: 8, borderLeft: "3px solid #3B82F6" }}>
+                    <p style={{ fontSize: 12, color: "#1E40AF", lineHeight: 1.8, margin: 0, fontWeight: 500 }}>
+                      이 학생의 글은 시의 형식을 갖추고 있으며, 비유적 표현을 시도한 점이 좋습니다. 다만 '나'를 표현하는 내용이 다소 추상적이어서 구체성을 높이면 더욱 좋은 작품이 될 것입니다.
+                    </p>
+                  </div>
+                </div>
+
+                {/* 섹션3: 항목별 평가 (우측) */}
+                <div style={{ border: "1px solid #E5E7EB", borderRadius: 12, padding: 20, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                    <span style={{ fontSize: 18 }}>📊</span>
+                    <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111827", margin: 0 }}>항목별 평가</h3>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {[
+                      { label: "자기 표현", score: 18, max: 30, color: "#3B82F6" },
+                      { label: "비유·상징의 적절성", score: 24, max: 30, color: "#8B5CF6" },
+                      { label: "시적 표현과 이미지", score: 18, max: 30, color: "#EC4899" },
+                      { label: "형식의 완성도", score: 8, max: 10, color: "#10B981" }
+                    ].map((item, idx) => {
+                      const percentage = (item.score / item.max) * 100;
+                      return (
+                        <div key={idx}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                            <span style={{ fontSize: 12, fontWeight: 700, color: "#111827" }}>{item.label}</span>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: item.color }}>{item.score}<span style={{ color: "#9CA3AF", fontWeight: 500, fontSize: 11 }}>/{item.max}</span></span>
+                          </div>
+                          <div style={{ position: "relative", width: "100%", height: 8, background: "#F3F4F6", borderRadius: 4, overflow: "hidden" }}>
+                            <div style={{ width: `${percentage}%`, height: "100%", background: `linear-gradient(90deg, ${item.color} 0%, ${item.color}DD 100%)`, borderRadius: 4, transition: "width 0.5s ease" }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* 섹션4: 제출한 글 (형광펜 하이라이트 스타일) */}
+              <div style={{ border: "1px solid #E5E7EB", borderRadius: 12, padding: 20, marginBottom: 20, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                  <span style={{ fontSize: 18 }}>📝</span>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111827", margin: 0 }}>제출한 글</h3>
+                </div>
+                <div style={{ background: "#FAFBFC", border: "1px solid #E5E7EB", borderRadius: 8, padding: 18, fontSize: 14, color: "#111827", lineHeight: 2.2, fontFamily: "inherit" }}>
+                  <p style={{ margin: "0 0 14px" }}>
+                    <span style={{ background: "#FEF3C7", padding: "2px 4px", borderRadius: 3, fontWeight: 500 }}>나는 아침 창가에 스며드는 햇살이다</span>
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    <span style={{ background: "#DBEAFE", padding: "2px 4px", borderRadius: 3, fontWeight: 500 }}>고양이의 숨결처럼 포근하게 내려앉는다</span>
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    차가운 방을 부드럽게 깨우는 손길이다
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    <span style={{ background: "#FEF3C7", padding: "2px 4px", borderRadius: 3, fontWeight: 500 }}>나는 마음을 비추는 작은 등불이다</span>
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    어둠 속에서도 길을 찾게 하는 빛이다
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    희망을 나누는 따뜻한 말 한마디다
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    <span style={{ background: "#FEF3C7", padding: "2px 4px", borderRadius: 3, fontWeight: 500 }}>쓸쓸한 나는 미세한 빛 한 줄 얻지만다</span>
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    금빛 물결처럼 거리 위에 번져 간다
+                  </p>
+                  <p style={{ margin: "0 0 14px" }}>
+                    지친 하루를 감싸는 이불이다
+                  </p>
+                  <p style={{ margin: 0 }}>
+                    내일을 향해 다시 걷게 하는 힘이다
+                  </p>
+                </div>
+                
+                {/* 범례 */}
+                <div style={{ display: "flex", gap: 20, marginTop: 16, paddingTop: 16, borderTop: "1px solid #F3F4F6", fontSize: 12, color: "#6B7280" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 16, height: 16, background: "#FEF3C7", border: "1px solid #FDE68A", borderRadius: 3 }} />
+                    <span style={{ fontWeight: 600 }}>형식 제시어</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 16, height: 16, background: "#DBEAFE", border: "1px solid #BFDBFE", borderRadius: 3 }} />
+                    <span style={{ fontWeight: 600 }}>중심 내용</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 16, height: 16, background: "#D1FAE5", border: "1px solid #A7F3D0", borderRadius: 3 }} />
+                    <span style={{ fontWeight: 600 }}>인용표현</span>
+                  </div>
+                </div>
+                
+                {/* 통계 박스 */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 16, marginTop: 20, paddingTop: 20, borderTop: "1px solid #E5E7EB" }}>
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontSize: 11, color: "#9CA3AF", margin: "0 0 6px", fontWeight: 600 }}>전체 글자 수</p>
+                    <p style={{ fontSize: 22, fontWeight: 800, color: "#3B82F6", margin: 0 }}>312<span style={{ fontSize: 12, color: "#9CA3AF" }}>자</span></p>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontSize: 11, color: "#9CA3AF", margin: "0 0 6px", fontWeight: 600 }}>전체 문장 수</p>
+                    <p style={{ fontSize: 22, fontWeight: 800, color: "#3B82F6", margin: 0 }}>2<span style={{ fontSize: 12, color: "#9CA3AF" }}>개</span></p>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontSize: 11, color: "#9CA3AF", margin: "0 0 6px", fontWeight: 600 }}>전체 문단 수</p>
+                    <p style={{ fontSize: 22, fontWeight: 800, color: "#3B82F6", margin: 0 }}>10<span style={{ fontSize: 12, color: "#9CA3AF" }}>개</span></p>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontSize: 11, color: "#9CA3AF", margin: "0 0 6px", fontWeight: 600 }}>평균 문장 길이</p>
+                    <p style={{ fontSize: 18, fontWeight: 800, color: "#3B82F6", margin: 0 }}>13~15<span style={{ fontSize: 12, color: "#9CA3AF" }}>자</span></p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 섹션5: 통계 분석 (워드클라우드 + 테이블) */}
+              <div style={{ border: "1px solid #E5E7EB", borderRadius: 12, padding: 20, marginBottom: 20, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                  <span style={{ fontSize: 18 }}>📈</span>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, color: "#111827", margin: 0 }}>통계 분석</h3>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20 }}>
+                  {/* 워드클라우드 영역 */}
+                  <div style={{ border: "2px dashed #E5E7EB", borderRadius: 8, padding: 20, minHeight: 200, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 10, background: "linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%)" }}>
+                    <span style={{ fontSize: 28, fontWeight: 800, color: "#EF4444", textShadow: "1px 1px 2px rgba(0,0,0,0.1)" }}>표현</span>
+                    <span style={{ fontSize: 20, fontWeight: 700, color: "#F59E0B" }}>비유</span>
+                    <span style={{ fontSize: 36, fontWeight: 900, color: "#3B82F6", textShadow: "2px 2px 3px rgba(0,0,0,0.1)" }}>시</span>
+                    <span style={{ fontSize: 18, fontWeight: 600, color: "#8B5CF6" }}>감정</span>
+                    <span style={{ fontSize: 24, fontWeight: 700, color: "#10B981" }}>이미지</span>
+                    <span style={{ fontSize: 16, fontWeight: 500, color: "#6B7280" }}>상징</span>
+                    <span style={{ fontSize: 26, fontWeight: 800, color: "#EC4899", textShadow: "1px 1px 2px rgba(0,0,0,0.1)" }}>나</span>
+                    <span style={{ fontSize: 18, fontWeight: 600, color: "#F59E0B" }}>햇살</span>
+                    <span style={{ fontSize: 16, fontWeight: 500, color: "#3B82F6" }}>등불</span>
+                    <span style={{ fontSize: 20, fontWeight: 700, color: "#10B981" }}>마음</span>
+                    <span style={{ fontSize: 14, fontWeight: 500, color: "#6B7280" }}>형식</span>
+                    <span style={{ fontSize: 18, fontWeight: 600, color: "#EF4444" }}>스트레스</span>
+                  </div>
+                  
+                  {/* 수치 테이블 */}
+                  <div style={{ fontSize: 12, background: "#FAFBFC", border: "1px solid #E5E7EB", borderRadius: 8, padding: 12 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>전체 글자 수 ✎</span>
+                      <span style={{ fontWeight: 700, color: "#111827" }}>93.7<span style={{ fontSize: 10, color: "#9CA3AF" }}>자</span></span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>전체 문장 수 ✎</span>
+                      <span style={{ fontWeight: 700, color: "#111827" }}>7<span style={{ fontSize: 10, color: "#9CA3AF" }}>개</span></span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>전체 문단 수 ✎</span>
+                      <span style={{ fontWeight: 700, color: "#111827" }}>3<span style={{ fontSize: 10, color: "#9CA3AF" }}>개</span></span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>본문서 분석 수 ✎</span>
+                      <span style={{ fontWeight: 700, color: "#F59E0B" }}>2<span style={{ fontSize: 10, color: "#9CA3AF" }}>개</span></span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>가독 확보 난이도</span>
+                      <span style={{ fontWeight: 700, color: "#F59E0B" }}>-4점</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px", borderBottom: "1px solid #E5E7EB" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>평가 수준 점수</span>
+                      <span style={{ fontWeight: 700, color: "#EF4444" }}>-14.5점</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 10px" }}>
+                      <span style={{ color: "#6B7280", fontWeight: 600 }}>쓰기 지속 점수</span>
+                      <span style={{ fontWeight: 700, color: "#10B981" }}>94.7%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 섹션6: 상세 첨삭 (검은 헤더 스타일) */}
+              <div style={{ border: "1px solid #E5E7EB", borderRadius: 12, overflow: "hidden", marginBottom: 20, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+                <div style={{ background: "linear-gradient(135deg, #1F2937 0%, #111827 100%)", padding: "16px 20px", display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 18 }}>✏️</span>
+                  <h3 style={{ fontSize: 16, fontWeight: 800, color: "#fff", margin: 0 }}>고쳐야 할 점</h3>
+                </div>
+                <div style={{ padding: 20 }}>
+                  <p style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.9, margin: "0 0 20px", background: "#F9FAFB", padding: 12, borderRadius: 6, borderLeft: "3px solid #D1D5DB" }}>
+                    학생의 글에는 비유와 상징적 표현을 활용하여 '나'를 드러내려는 시도가 보입니다.
+                  </p>
+
+                  {/* 항목 1 */}
+                  <div style={{ marginBottom: 24, border: "1px solid #E5E7EB", borderRadius: 8, overflow: "hidden" }}>
+                    <div style={{ background: "#111827", color: "#fff", padding: "10px 16px", fontSize: 13, fontWeight: 700, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>자기 표현의 명확성 <span style={{ fontSize: 11, fontWeight: 400, color: "#D1D5DB" }}>15점</span></span>
+                      <span style={{ background: "#3B82F6", padding: "3px 10px", borderRadius: 12, fontSize: 12 }}>45 / 62점</span>
+                    </div>
+                    <div style={{ padding: 16, background: "#FAFBFC" }}>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💬 평가 내용</p>
+                      <p style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: "0 0 14px" }}>
+                        '나'를 표현하기 위해 여러 비유를 사용했으나, '햇살', '등불', '노래' 등이 서로 연결되지 않고 나열되어 있어 중심 이미지가 명확하지 않습니다.
+                      </p>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💡 개선 방법</p>
+                      <ul style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: 0, paddingLeft: 20 }}>
+                        <li style={{ marginBottom: 6 }}>하나의 중심 이미지를 정하고, 그것을 여러 각도에서 확장해보세요.</li>
+                        <li>"나는 겨울 아침의 햇살이다"로 시작한다면, 햇살이 주는 따뜻함, 희망 등을 구체적 장면으로 보여주세요.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* 항목 2 */}
+                  <div style={{ marginBottom: 24, border: "1px solid #E5E7EB", borderRadius: 8, overflow: "hidden" }}>
+                    <div style={{ background: "#111827", color: "#fff", padding: "10px 16px", fontSize: 13, fontWeight: 700, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>비유 표현의 효과적 활용 <span style={{ fontSize: 11, fontWeight: 400, color: "#D1D5DB" }}>12점</span></span>
+                      <span style={{ background: "#8B5CF6", padding: "3px 10px", borderRadius: 12, fontSize: 12 }}>30 / 42점</span>
+                    </div>
+                    <div style={{ padding: 16, background: "#FAFBFC" }}>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💬 평가 내용</p>
+                      <p style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: "0 0 14px" }}>
+                        비유 표현을 여러 개 사용했으나, 각 비유가 어떤 의미인지 명확하게 드러나지 않습니다.
+                      </p>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💡 개선 방법</p>
+                      <ul style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: 0, paddingLeft: 20 }}>
+                        <li style={{ marginBottom: 6 }}>비유를 사용할 때는 "왜 그것인가?"를 생각하며 구체적인 상황과 함께 제시하세요.</li>
+                        <li>"나는 등불이다"보다 "나는 깜깜한 밤 홀로 걷는 사람에게 길을 보여주는 등불이다"처럼 맥락을 더하세요.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* 항목 3 */}
+                  <div style={{ marginBottom: 24, border: "1px solid #E5E7EB", borderRadius: 8, overflow: "hidden" }}>
+                    <div style={{ background: "#111827", color: "#fff", padding: "10px 16px", fontSize: 13, fontWeight: 700, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>시적 이미지와 감각적 표현 <span style={{ fontSize: 11, fontWeight: 400, color: "#D1D5DB" }}>15점</span></span>
+                      <span style={{ background: "#EC4899", padding: "3px 10px", borderRadius: 12, fontSize: 12 }}>38 / 53점</span>
+                    </div>
+                    <div style={{ padding: 16, background: "#FAFBFC" }}>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💬 평가 내용</p>
+                      <p style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: "0 0 14px" }}>
+                        "고양이의 숨결처럼", "금빛 물결처럼" 등 감각적 표현을 시도했으나, 설명적인 문장이 많아 시적 느낌이 약합니다.
+                      </p>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💡 개선 방법</p>
+                      <ul style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: 0, paddingLeft: 20 }}>
+                        <li style={{ marginBottom: 6 }}>"~이다", "~한다"처럼 직접 설명하기보다는 이미지 중심으로 보여주세요.</li>
+                        <li>"차가운 방을 부드럽게 깨우는 손길" 같은 구체적 장면을 더 활용하세요.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* 항목 4 */}
+                  <div style={{ border: "1px solid #E5E7EB", borderRadius: 8, overflow: "hidden" }}>
+                    <div style={{ background: "#111827", color: "#fff", padding: "10px 16px", fontSize: 13, fontWeight: 700, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span>형식 완성도 <span style={{ fontSize: 11, fontWeight: 400, color: "#D1D5DB" }}>5점</span></span>
+                      <span style={{ background: "#10B981", padding: "3px 10px", borderRadius: 12, fontSize: 12 }}>24 / 29점</span>
+                    </div>
+                    <div style={{ padding: 16, background: "#FAFBFC" }}>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💬 평가 내용</p>
+                      <p style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: "0 0 14px" }}>
+                        연과 행의 구조를 갖추어 시의 형식을 잘 따랐습니다.
+                      </p>
+                      <p style={{ fontSize: 12, color: "#111827", fontWeight: 700, margin: "0 0 8px" }}>💡 개선 방법</p>
+                      <p style={{ fontSize: 12, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>
+                        각 연이 의미적으로도 구분되도록 내용을 조금 더 정리하면 좋겠습니다.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 마지막 안내 */}
+              <div style={{ background: "linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)", border: "1px solid #BFDBFE", borderRadius: 12, padding: 18, marginBottom: 24 }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ fontSize: 20 }}>💡</span>
+                  <div>
+                    <h4 style={{ fontSize: 13, fontWeight: 800, color: "#1E40AF", margin: "0 0 8px" }}>빛 따뜻함 희망 나 이를 토대로 예시</h4>
+                    <p style={{ fontSize: 12, color: "#1E40AF", lineHeight: 1.8, margin: 0 }}>
+                      "나는 겨울 아침의 햇살이다. 차가운 창문을 녹이고, 얼어붙은 마음도 따뜻하게 녹인다. 어둠 속에서도 길을 찾게 하는 빛이다."
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button onClick={() => setPage("home")} style={{ width: "100%", padding: "14px", borderRadius: 10, border: "2px solid #3B82F6", background: "#fff", color: "#3B82F6", fontSize: 15, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }} onMouseEnter={e => { e.target.style.background = "#3B82F6"; e.target.style.color = "#fff"; }} onMouseLeave={e => { e.target.style.background = "#fff"; e.target.style.color = "#3B82F6"; }}>← 목록으로 돌아가기</button>
             </div>
           </div>
         );

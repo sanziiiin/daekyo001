@@ -27,12 +27,15 @@
     const SB = { draft: "#F3F4F6", writing: "#FFFBEB", submitted: "#EFF6FF", evaluating: "#F5F3FF", done: "#ECFDF5" };
 
     const TASK_DATA = [
-      { id: 1, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "2. 문학과 공감", period: "2026년 04월 2주차", title: "'나'를 표현한 시 쓰기", status: "done", submitAt: "2026-04-10 10:30", evalAt: "2026-04-12 14:00", modifyUsed: false, modifiedAt: null, prevScore: null, score: "72점", ocrText: OCR_DUMMY, image: "dummy", rubricType: "poem" },
-      { id: 2, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "5. 바른 언어생활", period: "2026년 04월 2주차", title: "바람직한 언어생활에 관한 주장하는 글 쓰기", status: "writing", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "바람직한 언어생활을 하자는 주장은 오늘날 더욱 중요하다.\n\n첫째, 바람직한 언어생활은 상대를 배려하는 태도에서 시작된다.\n\n따라서 우리는 언제 어디서나 상대를 존중하는 말하기를 생활화해야 한다.", image: "dummy", rubricType: "essay" },
-      { id: 3, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "2. 문학과 공감", period: "2026년 04월 1주차", title: "작품 속 비유 표현을 활용한 모방 시 쓰기", status: "draft", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: null, rubricType: "poem" },
-      { id: 4, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "4. 환경과 우리", period: "2026년 04월 2주차", title: "환경 문제 해결을 위한 주장하는 글 쓰기", status: "submitted", submitAt: "2026-04-15 09:20", evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: "dummy", rubricType: "essay" },
-      { id: 5, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "1. 나의 꿈", period: "2026년 04월 1주차", title: "상징을 활용하여 자신의 꿈을 표현하는 시 쓰기", status: "evaluating", submitAt: "2026-04-08 13:45", evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: "dummy", rubricType: "poem" },
-      { id: 6, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "6. 디지털 시대의 삶", period: "2026년 03월 4주차", title: "디지털 기기 사용 시간 제한에 관한 주장하는 글 쓰기", status: "done", submitAt: "2026-03-28 11:10", evalAt: "2026-03-30 16:00", modifyUsed: true, modifiedAt: "2026-04-02 10:30", prevScore: "61점", score: "78점", ocrText: "", image: "dummy", rubricType: "essay" },
+      { id: 1, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "2. 문학과 공감", period: "2026년 04월 2주차", title: "'나'를 표현한 시 쓰기", status: "done", submitAt: "2026-04-10 10:30", evalAt: "2026-04-12 14:00", modifyUsed: false, modifiedAt: null, prevScore: null, score: "72점", ocrText: OCR_DUMMY, image: "dummy", rubricType: "poem", teacher: "이써밋" },
+      { id: 2, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "5. 바른 언어생활", period: "2026년 04월 2주차", title: "바람직한 언어생활에 관한 주장하는 글 쓰기", status: "writing", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "바람직한 언어생활을 하자는 주장은 오늘날 더욱 중요하다.\n\n첫째, 바람직한 언어생활은 상대를 배려하는 태도에서 시작된다.\n\n따라서 우리는 언제 어디서나 상대를 존중하는 말하기를 생활화해야 한다.", image: "dummy", rubricType: "essay", teacher: "이써밋" },
+      { id: 3, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "2. 문학과 공감", period: "2026년 04월 1주차", title: "작품 속 비유 표현을 활용한 모방 시 쓰기", status: "draft", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: null, rubricType: "poem", teacher: "이써밋" },
+      { id: 4, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "4. 환경과 우리", period: "2026년 04월 2주차", title: "환경 문제 해결을 위한 주장하는 글 쓰기", status: "submitted", submitAt: "2026-04-15 09:20", evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: "dummy", rubricType: "essay", teacher: "이써밋" },
+      { id: 5, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "1. 나의 꿈", period: "2026년 04월 1주차", title: "상징을 활용하여 자신의 꿈을 표현하는 시 쓰기", status: "evaluating", submitAt: "2026-04-08 13:45", evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: "dummy", rubricType: "poem", teacher: "이써밋" },
+      { id: 6, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "6. 디지털 시대의 삶", period: "2026년 03월 4주차", title: "디지털 기기 사용 시간 제한에 관한 주장하는 글 쓰기", status: "done", submitAt: "2026-03-28 11:10", evalAt: "2026-03-30 16:00", modifyUsed: true, modifiedAt: "2026-04-02 10:30", prevScore: "61점", score: "78점", ocrText: "", image: "dummy", rubricType: "essay", teacher: "이써밋" },
+      { id: 7, grade: "중1-1", subject: "국어", publisher: "천재(노)", hour: "1학년 11호", unit: "3. 글의 구조", period: "2026년 04월 3주차", title: "효과적인 문단 구성으로 설명하는 글 쓰기", status: "draft", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: null, rubricType: "essay", teacher: "이써밋" },
+      { id: 8, grade: "중1-2", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "4. 생각의 표현", period: "2026년 04월 3주차", title: "근거를 들어 주장하는 글 쓰기", status: "draft", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: null, rubricType: "essay", teacher: "이써밋" },
+      { id: 9, grade: "중1-1", subject: "국어", publisher: "미래엔(민)", hour: "1학년 2호", unit: "3. 소통과 공감", period: "2026년 04월 4주차", title: "감정을 담아 시 쓰기", status: "draft", submitAt: null, evalAt: null, modifyUsed: false, modifiedAt: null, prevScore: null, score: null, ocrText: "", image: null, rubricType: "poem", teacher: "이써밋" },
     ];
 
     const TASK_INFO = {
@@ -144,11 +147,15 @@
 
 
 
-    function Sel({ value, onChange, options, placeholder = "전체" }) {
+    function Sel({ value, onChange, options, placeholder = "전체", children }) {
       return (
         <select value={value} onChange={e => onChange(e.target.value)} style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, color: value ? D : "#9CA3AF", background: "#fff", cursor: "pointer", outline: "none" }}>
           <option value="">{placeholder}</option>
-          {options.map(o => <option key={o} value={o}>{o}</option>)}
+          {children || options.map(o => {
+            const label = typeof o === "string" ? SL[o] || o : o;
+            const val = typeof o === "string" ? o : o;
+            return <option key={val} value={val}>{label}</option>;
+          })}
         </select>
       );
     }
@@ -175,6 +182,12 @@
       const [fHour, setFHour] = useState("");
       const [fStatus, setFStatus] = useState("");
       const [onlyDone, setOnlyDone] = useState(false);
+      const [activeTab, setActiveTab] = useState("writing");
+      const [searchType, setSearchType] = useState("title");
+      const [searchText, setSearchText] = useState("");
+      const [dateType, setDateType] = useState("submit");
+      const [startDate, setStartDate] = useState("");
+      const [endDate, setEndDate] = useState("");
       const [toast, setToast] = useState("");
       const [modal, setModal] = useState(null);
       const [showCurriculumPopup, setShowCurriculumPopup] = useState(false);
@@ -593,229 +606,285 @@
       }
 
       // ── HOME ──
-      if (page === "home") return (
-        <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
-          {toast && <Toast msg={toast} />}
-          {showCurriculumPopup && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-              <div style={{ background: "#fff", borderRadius: 16, maxWidth: 900, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
-                <div style={{ padding: "20px 24px", borderBottom: "2px solid #E5E7EB", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>수행평가 단원 연계표</h2>
-                  <button onClick={() => setShowCurriculumPopup(false)} style={{ width: 32, height: 32, borderRadius: "50%", background: B, border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18, color: D3 }}>✕</button>
-                </div>
-                <div style={{ flex: 1, overflow: "auto", padding: 24 }}>
-                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr style={{ background: "#10B981" }}>
-                        <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff", borderRight: "2px solid #059669", width: "15%" }}>개념</th>
-                        <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff" }}>교과서 단원</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>온율</td>
-                        <td style={{ padding: "16px 20px" }}>
-                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 1. 문학과의 만남 (1) 시의 표현</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-1  &nbsp;&nbsp; 1. 문학과 표현</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-1  &nbsp;&nbsp; 1. 문학과 삶에서 만나는 의미 01. 운율, 비유, 상징의 즐거움</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-1  &nbsp;&nbsp; 1. 문학과 매체로 여는 소통의 창 01. 깊이 감상하고 넓게 표현하기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-1  &nbsp;&nbsp; 1. 마음을 표현하는 법 (1) 운율과 비유</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-1  &nbsp;&nbsp; 1. 표현과 소통의 즐거움 (1) 길</li>
-                          </ul>
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>주장</td>
-                        <td style={{ padding: "16px 20px" }}>
-                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 5. 바른 언어생활</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-2  &nbsp;&nbsp; 3. 능동적 읽기와 쓰기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-2  &nbsp;&nbsp; 2. 생각을 나누는 글쓰기와 발표</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-2  &nbsp;&nbsp; 4. 주장과 설득의 힘</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-2  &nbsp;&nbsp; 2. 생각을 표현하는 글쓰기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-2  &nbsp;&nbsp; 3. 주장하는 글의 타당성</li>
-                          </ul>
-                        </td>
-                      </tr>
-                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>설명</td>
-                        <td style={{ padding: "16px 20px" }}>
-                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 2-1  &nbsp;&nbsp; 2. 읽기의 방법</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 2-1  &nbsp;&nbsp; 4. 읽기와 쓰기의 과정</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 2-1  &nbsp;&nbsp; 3. 효과적인 읽기와 쓰기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 2-1  &nbsp;&nbsp; 2. 정보를 전달하는 글쓰기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 2-1  &nbsp;&nbsp; 3. 정보 전달의 글쓰기</li>
-                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 2-1  &nbsp;&nbsp; 4. 매체와 읽기</li>
-                          </ul>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-          <div style={{ maxWidth: 768, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div>
-                <h1 style={{ fontSize: 22, fontWeight: 700, color: D, margin: 0 }}>수행평가</h1>
-                <p style={{ fontSize: 13, color: "#9CA3AF", margin: "4px 0 0" }}>과제 목록을 확인하세요</p>
-              </div>
-              <button onClick={() => setPage("intro")} style={{ padding: "8px 14px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#6B7280", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>← 처음으로</button>
-            </div>
-            <div style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
-                <Sel value={fGrade} onChange={setFGrade} options={GRADES} placeholder="학년" />
-                <Sel value={fHour} onChange={setFHour} options={HOURS} placeholder="호" />
-                <Sel value={fStatus} onChange={setFStatus} options={Object.keys(SL)} placeholder="제출상태" />
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <input type="checkbox" checked={onlyDone} onChange={e => setOnlyDone(e.target.checked)} id="onlyDone" style={{ width: 16, height: 16, cursor: "pointer" }} />
-                <label htmlFor="onlyDone" style={{ fontSize: 13, color: D3, cursor: "pointer" }}>결과서만 보기</label>
-                {hasFilter && <button onClick={() => { setFGrade(""); setFHour(""); setFStatus(""); setOnlyDone(false); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
-              </div>
-            </div>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button onClick={() => setShowCurriculumPopup(true)} style={{ padding: "8px 14px", background: "#fff", border: "1.5px solid #2563EB", borderRadius: 8, fontSize: 13, fontWeight: 600, color: "#2563EB", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
-                수행평가 단원 연계표 <span style={{ fontSize: 12 }}>→</span>
-              </button>
-            </div>
-            {filtered.length === 0 ? (
-              <div style={{ background: "#fff", borderRadius: 12, padding: 40, textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                <p style={{ fontSize: 14, color: "#9CA3AF", margin: 0 }}>조건에 맞는 과제가 없습니다</p>
-              </div>
-            ) : (
-              filtered.map(item => {
-                const formatDate = (dateStr) => {
-                  if (!dateStr) return null;
-                  const [date, time] = dateStr.split(' ');
-                  const [y, m, d] = date.split('-');
-                  return `${y}.${m}.${d} ${time}`;
-                };
-                const canWrite = item.status === "draft" || item.status === "writing";
-                const canResult = item.status === "done";
-                const canRewrite = item.status === "done" && !item.modifyUsed;
-                const hasRewrite = item.status === "done" && item.modifyUsed;
-
-                return (
-                  <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                    <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
-                      {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
-                    </div>
-                    <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 8px", lineHeight: 1.4 }}>{item.title}</p>
-                    
-                    {/* 날짜 정보 표시 */}
-                    <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
-                      {item.submitAt && (
-                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-                          제출일: {formatDate(item.submitAt)}
-                        </span>
-                      )}
-                      {item.evalAt && (
-                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-                          평가일: {formatDate(item.evalAt)}
-                        </span>
-                      )}
-                      {item.modifiedAt && (
-                        <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-                          수정일: {formatDate(item.modifiedAt)}
-                        </span>
-                      )}
-                    </div>
-
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: SC[item.status], background: SB[item.status], padding: "3px 10px", borderRadius: 20 }}>
-                          {SL[item.status]}
-                        </span>
-                        {item.status === "done" && item.score && (
-                          <span style={{ fontSize: 12, fontWeight: 700, color: SC.done }}>{item.score}</span>
-                        )}
-                      </div>
-                      <div style={{ display: "flex", gap: 6 }}>
-                        {canWrite && (
-                          <button
-                            onClick={() => goWrite(item, false)}
-                            style={{
-                              padding: "6px 12px",
-                              borderRadius: 8,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: "pointer",
-                              border: "none",
-                              background: "#2563EB",
-                              color: "#fff",
-                              whiteSpace: "nowrap"
-                            }}
-                          >
-                            {item.status === "writing" ? "이어쓰기" : "작성하기"}
-                          </button>
-                        )}
-                        {canRewrite && (
-                          <button
-                            onClick={() => goWrite(item, true)}
-                            style={{
-                              padding: "6px 12px",
-                              borderRadius: 8,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: "pointer",
-                              border: "1.5px solid #2563EB",
-                              background: "#fff",
-                              color: "#2563EB",
-                              whiteSpace: "nowrap"
-                            }}
-                          >
-                            고쳐쓰기
-                          </button>
-                        )}
-                        {hasRewrite && (
-                          <button
-                            onClick={() => { setResultId(item.id); setResultTab("original"); setPage("result"); }}
-                            style={{
-                              padding: "6px 12px",
-                              borderRadius: 8,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: "pointer",
-                              border: "1.5px solid #2563EB",
-                              background: "#fff",
-                              color: "#2563EB",
-                              whiteSpace: "nowrap"
-                            }}
-                          >
-                            1차 결과서
-                          </button>
-                        )}
-                        {canResult && (
-                          <button
-                            onClick={() => { setResultId(item.id); setResultTab(hasRewrite ? "rewrite" : "original"); setPage("result"); }}
-                            style={{
-                              padding: "6px 12px",
-                              borderRadius: 8,
-                              fontSize: 12,
-                              fontWeight: 600,
-                              cursor: "pointer",
-                              border: "none",
-                              background: "#2563EB",
-                              color: "#fff",
-                              whiteSpace: "nowrap"
-                            }}
-                          >
-                            결과서 보기
-                          </button>
-                        )}
-                      </div>
-                    </div>
+      if (page === "home") {
+        const hasFilter = fGrade || fHour || fStatus;
+        
+        // 작성 과제 필터링 (제출 전, 작성 중)
+        const writingTasks = list.filter(r => 
+          (r.status === "draft" || r.status === "writing") &&
+          (!fGrade || r.grade === fGrade) && 
+          (!fHour || r.hour === fHour) && 
+          (!fStatus || r.status === fStatus)
+        ).slice(0, 5);
+        
+        // 제출 과제 필터링 (제출 완료, 평가 중, 평가 완료)
+        let submittedTasks = list.filter(r => 
+          (r.status === "submitted" || r.status === "evaluating" || r.status === "done") &&
+          (!fGrade || r.grade === fGrade) && 
+          (!fHour || r.hour === fHour) && 
+          (!fStatus || r.status === fStatus)
+        );
+        
+        // 제출 과제 추가 필터 (검색어, 날짜)
+        if (activeTab === "submitted") {
+          if (searchText) {
+            submittedTasks = submittedTasks.filter(r => {
+              if (searchType === "title") return r.title.includes(searchText);
+              if (searchType === "task") return r.unit.includes(searchText);
+              return true;
+            });
+          }
+          
+          if (startDate && endDate) {
+            submittedTasks = submittedTasks.filter(r => {
+              let targetDate = null;
+              if (dateType === "submit") targetDate = r.submitAt;
+              if (dateType === "modify") targetDate = r.modifiedAt;
+              if (dateType === "eval") targetDate = r.evalAt;
+              
+              if (!targetDate) return false;
+              const date = targetDate.split(" ")[0];
+              return date >= startDate && date <= endDate;
+            });
+          }
+        }
+        
+        submittedTasks = submittedTasks.slice(0, 5);
+        
+        const formatDate = (dateStr) => {
+          if (!dateStr) return null;
+          const [date, time] = dateStr.split(' ');
+          const [y, m, d] = date.split('-');
+          return `${y}.${m}.${d} ${time}`;
+        };
+        
+        return (
+          <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
+            {toast && <Toast msg={toast} />}
+            {showCurriculumPopup && (
+              <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                <div style={{ background: "#fff", borderRadius: 16, maxWidth: 900, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
+                  <div style={{ padding: "20px 24px", borderBottom: "2px solid #E5E7EB", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <h2 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>수행평가 단원 연계표</h2>
+                    <button onClick={() => setShowCurriculumPopup(false)} style={{ width: 32, height: 32, borderRadius: "50%", background: B, border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18, color: D3 }}>✕</button>
                   </div>
-                );
-              })
+                  <div style={{ flex: 1, overflow: "auto", padding: 24 }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                      <thead>
+                        <tr style={{ background: "#10B981" }}>
+                          <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff", borderRight: "2px solid #059669", width: "15%" }}>개념</th>
+                          <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff" }}>교과서 단원</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>온율</td>
+                          <td style={{ padding: "16px 20px" }}>
+                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 1. 문학과의 만남 (1) 시의 표현</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-1  &nbsp;&nbsp; 1. 문학과 표현</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-1  &nbsp;&nbsp; 1. 문학과 삶에서 만나는 의미 01. 운율, 비유, 상징의 즐거움</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-1  &nbsp;&nbsp; 1. 문학과 매체로 여는 소통의 창 01. 깊이 감상하고 넓게 표현하기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-1  &nbsp;&nbsp; 1. 마음을 표현하는 법 (1) 운율과 비유</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-1  &nbsp;&nbsp; 1. 표현과 소통의 즐거움 (1) 길</li>
+                            </ul>
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>주장</td>
+                          <td style={{ padding: "16px 20px" }}>
+                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 5. 바른 언어생활</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-2  &nbsp;&nbsp; 3. 능동적 읽기와 쓰기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-2  &nbsp;&nbsp; 2. 생각을 나누는 글쓰기와 발표</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-2  &nbsp;&nbsp; 4. 주장과 설득의 힘</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-2  &nbsp;&nbsp; 2. 생각을 표현하는 글쓰기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-2  &nbsp;&nbsp; 3. 주장하는 글의 타당성</li>
+                            </ul>
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>설명</td>
+                          <td style={{ padding: "16px 20px" }}>
+                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 2-1  &nbsp;&nbsp; 2. 읽기의 방법</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 2-1  &nbsp;&nbsp; 4. 읽기와 쓰기의 과정</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 2-1  &nbsp;&nbsp; 3. 효과적인 읽기와 쓰기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 2-1  &nbsp;&nbsp; 2. 정보를 전달하는 글쓰기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 2-1  &nbsp;&nbsp; 3. 정보 전달의 글쓰기</li>
+                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 2-1  &nbsp;&nbsp; 4. 매체와 읽기</li>
+                            </ul>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             )}
+            <div style={{ maxWidth: 768, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <h1 style={{ fontSize: 22, fontWeight: 700, color: D, margin: 0 }}>수행평가</h1>
+                  <p style={{ fontSize: 13, color: "#9CA3AF", margin: "4px 0 0" }}>과제 목록을 확인하세요</p>
+                </div>
+                <button onClick={() => setPage("intro")} style={{ padding: "8px 14px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#6B7280", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>← 처음으로</button>
+              </div>
+              
+              {/* 필터 영역 */}
+              <div style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
+                  <Sel value={fGrade} onChange={setFGrade} options={GRADES} placeholder="학년" />
+                  <Sel value={fHour} onChange={setFHour} options={HOURS} placeholder="호" />
+                  {activeTab === "writing" ? (
+                    <Sel value={fStatus} onChange={setFStatus} options={["draft", "writing"]} placeholder="제출상태" />
+                  ) : (
+                    <Sel value={fStatus} onChange={setFStatus} options={["submitted", "evaluating", "done"]} placeholder="제출상태" />
+                  )}
+                </div>
+                
+                {activeTab === "submitted" && (
+                  <>
+                    <div style={{ display: "grid", gridTemplateColumns: "120px 1fr 1fr", gap: 10, marginBottom: 12 }}>
+                      <Sel value={dateType} onChange={setDateType} options={[]} placeholder="일자검색">
+                        <option value="submit">제출일</option>
+                        <option value="modify">수정일</option>
+                        <option value="eval">평가일</option>
+                      </Sel>
+                      <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", cursor: "pointer", color: startDate ? D : "#9CA3AF" }} />
+                      <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", cursor: "pointer", color: endDate ? D : "#9CA3AF" }} />
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 10, marginBottom: 12 }}>
+                      <Sel value={searchType} onChange={setSearchType} options={[]} placeholder="검색">
+                        <option value="title">제목</option>
+                        <option value="task">과제명</option>
+                      </Sel>
+                      <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="검색어를 입력하세요" style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", color: D }} />
+                    </div>
+                  </>
+                )}
+                
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  {hasFilter && <button onClick={() => { setFGrade(""); setFHour(""); setFStatus(""); setSearchText(""); setStartDate(""); setEndDate(""); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
+                </div>
+              </div>
+              
+              {/* 단원 연계표 버튼 */}
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button onClick={() => setShowCurriculumPopup(true)} style={{ padding: "8px 14px", background: "#fff", border: "1.5px solid #2563EB", borderRadius: 8, fontSize: 13, fontWeight: 600, color: "#2563EB", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                  수행평가 단원 연계표 <span style={{ fontSize: 12 }}>→</span>
+                </button>
+              </div>
+              
+              {/* 탭 */}
+              <div style={{ display: "flex", gap: 8, borderBottom: "2px solid #E5E7EB" }}>
+                <button onClick={() => setActiveTab("writing")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "writing" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "writing" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>작성 과제</button>
+                <button onClick={() => setActiveTab("submitted")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "submitted" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "submitted" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>제출 과제</button>
+              </div>
+              
+              {/* 작성 과제 탭 */}
+              {activeTab === "writing" && (
+                <>
+                  {writingTasks.length === 0 ? (
+                    <div style={{ background: "#fff", borderRadius: 12, padding: 40, textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                      <p style={{ fontSize: 14, color: "#9CA3AF", margin: 0 }}>작성 중인 과제가 없습니다</p>
+                    </div>
+                  ) : (
+                    writingTasks.map(item => {
+                      const canWrite = item.status === "draft" || item.status === "writing";
+                      return (
+                        <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                          <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
+                            {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
+                          </div>
+                          <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 12px", lineHeight: 1.4 }}>{item.title}</p>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span style={{ fontSize: 12, fontWeight: 700, color: SC[item.status], background: SB[item.status], padding: "3px 10px", borderRadius: 20 }}>{SL[item.status]}</span>
+                            {canWrite && (
+                              <button onClick={() => goWrite(item, false)} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>
+                                {item.status === "writing" ? "이어쓰기" : "작성하기"}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </>
+              )}
+              
+              {/* 제출 과제 탭 */}
+              {activeTab === "submitted" && (
+                <>
+                  {submittedTasks.length === 0 ? (
+                    <div style={{ background: "#fff", borderRadius: 12, padding: 40, textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                      <p style={{ fontSize: 14, color: "#9CA3AF", margin: 0 }}>제출한 과제가 없습니다</p>
+                    </div>
+                  ) : (
+                    submittedTasks.map(item => {
+                      const hasRewrite = item.modifyUsed && item.prevScore;
+                      const canRewrite = item.status === "done" && !item.modifyUsed;
+                      return (
+                        <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+                          <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
+                            {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
+                            <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, padding: "2px 0" }}>선생님: {item.teacher}</span>
+                          </div>
+                          
+                          <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 8px", lineHeight: 1.4 }}>{item.title}</p>
+                          
+                          {/* 날짜 정보 표시 (기존 방식) */}
+                          <div style={{ display: "flex", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+                            {item.submitAt && (
+                              <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                                제출일: {formatDate(item.submitAt)}
+                              </span>
+                            )}
+                            {item.evalAt && (
+                              <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                                평가일: {formatDate(item.evalAt)}
+                              </span>
+                            )}
+                            {item.modifiedAt && (
+                              <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+                                수정일: {formatDate(item.modifiedAt)}
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                              <span style={{ fontSize: 12, fontWeight: 700, color: SC[item.status], background: SB[item.status], padding: "3px 10px", borderRadius: 20 }}>{SL[item.status]}</span>
+                              {item.status === "done" && (
+                                <span style={{ fontSize: 13, fontWeight: 700, color: hasRewrite ? "#10B981" : "#2563EB" }}>
+                                  {hasRewrite ? `${item.prevScore} → ${item.score}` : item.score}
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ display: "flex", gap: 6 }}>
+                              {canRewrite && (
+                                <button onClick={() => goWrite(item, true)} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>고쳐쓰기</button>
+                              )}
+                              {item.status === "done" && (
+                                <>
+                                  {hasRewrite && (
+                                    <button onClick={() => { setResultId(item.id); setResultTab("original"); setPage("result"); }} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
+                                  )}
+                                  <button onClick={() => { setResultId(item.id); setResultTab(hasRewrite ? "rewrite" : "original"); setPage("result"); }} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>결과서 보기</button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
 
       // ── WRITE ──
       if (page === "write") return (

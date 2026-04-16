@@ -177,6 +177,7 @@
       const [onlyDone, setOnlyDone] = useState(false);
       const [toast, setToast] = useState("");
       const [modal, setModal] = useState(null);
+      const [showCurriculumPopup, setShowCurriculumPopup] = useState(false);
       const [bgColor, setBgColor] = useState("#ffffff");
       const [fontFamily, setFontFamily] = useState("inherit");
       const [fontSize, setFontSize] = useState(14);
@@ -595,6 +596,67 @@
       if (page === "home") return (
         <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
           {toast && <Toast msg={toast} />}
+          {showCurriculumPopup && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+              <div style={{ background: "#fff", borderRadius: 16, maxWidth: 900, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
+                <div style={{ padding: "20px 24px", borderBottom: "2px solid #E5E7EB", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>수행평가 단원 연계표</h2>
+                  <button onClick={() => setShowCurriculumPopup(false)} style={{ width: 32, height: 32, borderRadius: "50%", background: B, border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18, color: D3 }}>✕</button>
+                </div>
+                <div style={{ flex: 1, overflow: "auto", padding: 24 }}>
+                  <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr style={{ background: "#10B981" }}>
+                        <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff", borderRight: "2px solid #059669", width: "15%" }}>개념</th>
+                        <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff" }}>교과서 단원</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>온율</td>
+                        <td style={{ padding: "16px 20px" }}>
+                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 1. 문학과의 만남 (1) 시의 표현</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-1  &nbsp;&nbsp; 1. 문학과 표현</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-1  &nbsp;&nbsp; 1. 문학과 삶에서 만나는 의미 01. 운율, 비유, 상징의 즐거움</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-1  &nbsp;&nbsp; 1. 문학과 매체로 여는 소통의 창 01. 깊이 감상하고 넓게 표현하기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-1  &nbsp;&nbsp; 1. 마음을 표현하는 법 (1) 운율과 비유</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-1  &nbsp;&nbsp; 1. 표현과 소통의 즐거움 (1) 길</li>
+                          </ul>
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>주장</td>
+                        <td style={{ padding: "16px 20px" }}>
+                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 5. 바른 언어생활</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-2  &nbsp;&nbsp; 3. 능동적 읽기와 쓰기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-2  &nbsp;&nbsp; 2. 생각을 나누는 글쓰기와 발표</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-2  &nbsp;&nbsp; 4. 주장과 설득의 힘</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-2  &nbsp;&nbsp; 2. 생각을 표현하는 글쓰기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-2  &nbsp;&nbsp; 3. 주장하는 글의 타당성</li>
+                          </ul>
+                        </td>
+                      </tr>
+                      <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+                        <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>설명</td>
+                        <td style={{ padding: "16px 20px" }}>
+                          <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 2-1  &nbsp;&nbsp; 2. 읽기의 방법</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 2-1  &nbsp;&nbsp; 4. 읽기와 쓰기의 과정</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 2-1  &nbsp;&nbsp; 3. 효과적인 읽기와 쓰기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 2-1  &nbsp;&nbsp; 2. 정보를 전달하는 글쓰기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 2-1  &nbsp;&nbsp; 3. 정보 전달의 글쓰기</li>
+                            <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 2-1  &nbsp;&nbsp; 4. 매체와 읽기</li>
+                          </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
           <div style={{ maxWidth: 768, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
@@ -614,6 +676,11 @@
                 <label htmlFor="onlyDone" style={{ fontSize: 13, color: D3, cursor: "pointer" }}>결과서만 보기</label>
                 {hasFilter && <button onClick={() => { setFGrade(""); setFHour(""); setFStatus(""); setOnlyDone(false); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
               </div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button onClick={() => setShowCurriculumPopup(true)} style={{ padding: "8px 14px", background: "#fff", border: "1.5px solid #2563EB", borderRadius: 8, fontSize: 13, fontWeight: 600, color: "#2563EB", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                수행평가 단원 연계표 <span style={{ fontSize: 12 }}>→</span>
+              </button>
             </div>
             {filtered.length === 0 ? (
               <div style={{ background: "#fff", borderRadius: 12, padding: 40, textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>

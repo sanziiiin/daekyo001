@@ -1281,9 +1281,9 @@
                               {item.status === "done" && (
                                 <>
                                   {hasRewrite && (
-                                    <button onClick={() => window.open(`result.html?id=${item.id}&tab=original`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
+                                    <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=original`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
                                   )}
-                                  <button onClick={() => window.open(`result.html?id=${item.id}&tab=${hasRewrite ? 'rewrite' : 'original'}`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>결과서 보기</button>
+                                  <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=${hasRewrite ? 'rewrite' : 'original'}`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>결과서 보기</button>
                                 </>
                               )}
                             </div>

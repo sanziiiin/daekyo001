@@ -70,6 +70,85 @@
       },
     };
 
+    // ========== 단원 연계표 데이터 ==========
+    const CURRICULUM_DATA = {
+      "1학년": {
+        "1호": [
+          { 
+            concept: "운율", 
+            publishers: [
+              "천재(노) 1-1. 시의 세계 (1) / 시와 표현",
+              "천재(정) 1-1. 문학과 표현",
+              "비상(박현) 1-1. 문학과 삶에서 만나는 의미 01. 운율, 비유, 상징의 즐거움",
+              "비상(박영) 1-1. 문학과 매체로 여는 소통의 창 01. 깊이 감상하고 넓게 표현하기",
+              "미래엔(민) 1-1. 마음을 표현하는 법 (1) 운율과 비유",
+              "미래엔(신) 1-1. 표현과 소통의 즐거움 (1) 길"
+            ]
+          }
+        ],
+        "2호": [
+          { 
+            concept: "천지(등)", 
+            publishers: [
+              "천재(노) 1-1. 시의 세계 (1) / 운율",
+              "미래엔(민) 1-1. 세상을 담은 시 / 감정",
+              "비상(김) 1-1. 생각이 열리는 문학 (1) / 통일",
+              "비상(한) 1-1. 조화로운 언어생활 / 맥락"
+            ]
+          },
+          { 
+            concept: "비유", 
+            publishers: [
+              "천재(노) 1-1. 시의 세계 (1) / 은유",
+              "미래엔(민) 1-1. 세상을 담은 시 / 상징",
+              "비상(김) 1-2. 생각이 깊어지는 문학 / 시어"
+            ]
+          }
+        ],
+        "11호": [
+          { 
+            concept: "마래(히)", 
+            publishers: [
+              "천재(노) 1-2. 말하기의 방법 (1) / 발표",
+              "미래엔(민) 1-2. 생각을 나누는 글 / 주장",
+              "비상(김) 1-2. 생각이 깊어지는 문학 / 성찰"
+            ]
+          }
+        ]
+      },
+      "2학년": {
+        "3호": [
+          { 
+            concept: "비교", 
+            publishers: [
+              "천재(노) 2-1. 읽기의 방법 (2) / 관점",
+              "미래엔(민) 2-1. 시대와 지역을 담은 쓰기 / 조사",
+              "비상(김) 2-1. 문학의 창작과 수용 / 생각"
+            ]
+          },
+          { 
+            concept: "주장", 
+            publishers: [
+              "천재(노) 2-2. 쓰기의 방법 (2) / 논리",
+              "미래엔(민) 2-2. 생각을 전하는 글 / 설득",
+              "비상(김) 2-2. 정보와 매체의 활용 / 근거"
+            ]
+          }
+        ]
+      },
+      "3학년": {
+        "1호": [
+          { 
+            concept: "마래(히)", 
+            publishers: [
+              "천재(노) 3-1. 소통하는 언어 (1) / 요약",
+              "미래엔(민) 3-1. 언어와 매체의 탐구 / 주장"
+            ]
+          }
+        ]
+      }
+    };
+
     // ========== 마이페이지 데이터 ==========
     const GROWTH_DATA = {
       term1: {
@@ -555,6 +634,8 @@
       const [toast, setToast] = useState("");
       const [modal, setModal] = useState(null);
       const [showCurriculumPopup, setShowCurriculumPopup] = useState(false);
+      const [curriculumGrade, setCurriculumGrade] = useState("1학년");
+      const [curriculumHour, setCurriculumHour] = useState("1호");
       const [showMoreMenu, setShowMoreMenu] = useState(false);
       const [myPageTab, setMyPageTab] = useState("growth");
       const [expandedSections, setExpandedSections] = useState({
@@ -1041,62 +1122,93 @@
           <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
             {toast && <Toast msg={toast} />}
             {showCurriculumPopup && (
-              <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 16, maxWidth: 900, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
-                  <div style={{ padding: "20px 24px", borderBottom: "2px solid #E5E7EB", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <h2 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>수행평가 단원 연계표</h2>
-                    <button onClick={() => setShowCurriculumPopup(false)} style={{ width: 32, height: 32, borderRadius: "50%", background: B, border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18, color: D3 }}>✕</button>
+              <div onClick={() => setShowCurriculumPopup(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 600, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
+                  {/* 헤더 */}
+                  <div style={{ padding: "20px 24px", borderBottom: "1px solid #E5E7EB", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <h2 style={{ fontSize: 18, fontWeight: 700, color: D, margin: 0 }}>수행평가 단원 연계표</h2>
+                    <button onClick={() => setShowCurriculumPopup(false)} style={{ width: 28, height: 28, borderRadius: "50%", background: "#F3F4F6", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 16, color: "#6B7280" }}>✕</button>
                   </div>
+                  
+                  {/* 필터 영역 */}
+                  <div style={{ padding: "16px 24px", background: "#F9FAFB", borderBottom: "1px solid #E5E7EB", display: "flex", gap: 10, alignItems: "center" }}>
+                    <select 
+                      value={curriculumGrade} 
+                      onChange={(e) => {
+                        setCurriculumGrade(e.target.value);
+                        const firstHour = Object.keys(CURRICULUM_DATA[e.target.value])[0];
+                        setCurriculumHour(firstHour);
+                      }}
+                      style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, color: D, background: "#fff", cursor: "pointer", outline: "none" }}
+                    >
+                      <option value="1학년">1학년</option>
+                      <option value="2학년">2학년</option>
+                      <option value="3학년">3학년</option>
+                    </select>
+                    
+                    <select 
+                      value={curriculumHour} 
+                      onChange={(e) => setCurriculumHour(e.target.value)}
+                      style={{ flex: 1, padding: "10px 12px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, color: D, background: "#fff", cursor: "pointer", outline: "none" }}
+                    >
+                      {Object.keys(CURRICULUM_DATA[curriculumGrade] || {}).map(hour => (
+                        <option key={hour} value={hour}>{hour}</option>
+                      ))}
+                    </select>
+                    
+                    <button 
+                      onClick={() => {
+                        setCurriculumGrade("1학년");
+                        setCurriculumHour("1호");
+                      }}
+                      style={{ padding: "10px 16px", borderRadius: 8, border: "1px solid #D1D5DB", background: "#fff", fontSize: 13, fontWeight: 600, color: D3, cursor: "pointer", whiteSpace: "nowrap" }}
+                    >
+                      초기화
+                    </button>
+                  </div>
+                  
+                  {/* 컨텐츠 영역 */}
                   <div style={{ flex: 1, overflow: "auto", padding: 24 }}>
-                    <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                      <thead>
-                        <tr style={{ background: "#10B981" }}>
-                          <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff", borderRight: "2px solid #059669", width: "15%" }}>개념</th>
-                          <th style={{ padding: "16px 20px", textAlign: "left", fontSize: 16, fontWeight: 700, color: "#fff" }}>교과서 단원</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>온율</td>
-                          <td style={{ padding: "16px 20px" }}>
-                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 1. 문학과의 만남 (1) 시의 표현</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-1  &nbsp;&nbsp; 1. 문학과 표현</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-1  &nbsp;&nbsp; 1. 문학과 삶에서 만나는 의미 01. 운율, 비유, 상징의 즐거움</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-1  &nbsp;&nbsp; 1. 문학과 매체로 여는 소통의 창 01. 깊이 감상하고 넓게 표현하기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-1  &nbsp;&nbsp; 1. 마음을 표현하는 법 (1) 운율과 비유</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-1  &nbsp;&nbsp; 1. 표현과 소통의 즐거움 (1) 길</li>
-                            </ul>
-                          </td>
-                        </tr>
-                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>주장</td>
-                          <td style={{ padding: "16px 20px" }}>
-                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 1-1  &nbsp;&nbsp; 5. 바른 언어생활</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 1-2  &nbsp;&nbsp; 3. 능동적 읽기와 쓰기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 1-2  &nbsp;&nbsp; 2. 생각을 나누는 글쓰기와 발표</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 1-2  &nbsp;&nbsp; 4. 주장과 설득의 힘</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 1-2  &nbsp;&nbsp; 2. 생각을 표현하는 글쓰기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 1-2  &nbsp;&nbsp; 3. 주장하는 글의 타당성</li>
-                            </ul>
-                          </td>
-                        </tr>
-                        <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
-                          <td style={{ padding: "16px 20px", fontSize: 14, fontWeight: 700, color: D, borderRight: "1px solid #E5E7EB", verticalAlign: "top", background: "#F9FAFB" }}>설명</td>
-                          <td style={{ padding: "16px 20px" }}>
-                            <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(노) 2-1  &nbsp;&nbsp; 2. 읽기의 방법</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 천재(정) 2-1  &nbsp;&nbsp; 4. 읽기와 쓰기의 과정</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박현) 2-1  &nbsp;&nbsp; 3. 효과적인 읽기와 쓰기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 비상(박영) 2-1  &nbsp;&nbsp; 2. 정보를 전달하는 글쓰기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(민) 2-1  &nbsp;&nbsp; 3. 정보 전달의 글쓰기</li>
-                              <li style={{ fontSize: 13, color: D2, lineHeight: 2, paddingLeft: 0 }}>• 미래엔(신) 2-1  &nbsp;&nbsp; 4. 매체와 읽기</li>
-                            </ul>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    {CURRICULUM_DATA[curriculumGrade]?.[curriculumHour] ? (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                        {CURRICULUM_DATA[curriculumGrade][curriculumHour].map((item, idx) => (
+                          <div key={idx}>
+                            {/* 개념 타이틀 (천재(노) 1-1 등) */}
+                            <div style={{ 
+                              padding: "8px 16px", 
+                              background: "#F3F4F6",
+                              borderRadius: "8px 8px 0 0"
+                            }}>
+                              <p style={{ fontSize: 13, fontWeight: 700, color: D, margin: 0 }}>{item.concept}</p>
+                            </div>
+                            
+                            {/* 출판사별 단원 정보 */}
+                            <div style={{ 
+                              padding: "14px 16px", 
+                              background: "#fff", 
+                              border: "1px solid #E5E7EB",
+                              borderTop: "none",
+                              borderRadius: "0 0 8px 8px"
+                            }}>
+                              {item.publishers.map((pub, pubIdx) => (
+                                <div key={pubIdx} style={{ 
+                                  fontSize: 12, 
+                                  color: "#6B7280", 
+                                  lineHeight: 1.8,
+                                  marginBottom: pubIdx < item.publishers.length - 1 ? 6 : 0
+                                }}>
+                                  • {pub}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: "center", padding: 40 }}>
+                        <p style={{ fontSize: 14, color: "#9CA3AF", margin: 0 }}>해당 학년/호의 데이터가 없습니다.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1174,12 +1286,8 @@
                       <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", cursor: "pointer", color: startDate ? D : "#9CA3AF" }} />
                       <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", cursor: "pointer", color: endDate ? D : "#9CA3AF" }} />
                     </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 10, marginBottom: 12 }}>
-                      <Sel value={searchType} onChange={setSearchType} options={[]} placeholder="검색">
-                        <option value="title">제목</option>
-                        <option value="task">과제명</option>
-                      </Sel>
-                      <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="검색어를 입력하세요" style={{ padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", color: D }} />
+                    <div style={{ marginBottom: 12 }}>
+                      <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="과제명으로 검색하세요" style={{ width: "100%", padding: "8px 12px", borderRadius: 8, border: "1.5px solid #E5E7EB", fontSize: 13, background: "#fff", color: D }} />
                     </div>
                   </>
                 )}
@@ -1205,10 +1313,15 @@
                   ) : (
                     writingTasks.map(item => {
                       const canWrite = item.status === "draft" || item.status === "writing";
+                      // 학년 추출: "중1-1" -> "1학년"
+                      const gradeNum = item.grade.includes("중1") ? "1학년" : item.grade.includes("중2") ? "2학년" : "3학년";
+                      // 호 추출: "1학년 2호" -> "2호"
+                      const hourNum = item.hour.split(" ")[1];
                       return (
                         <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
                           <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
-                            {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
+                            <span style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{gradeNum}</span>
+                            <span style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{hourNum}</span>
                           </div>
                           <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 12px", lineHeight: 1.4 }}>{item.title}</p>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -1237,11 +1350,16 @@
                     submittedTasks.map(item => {
                       const hasRewrite = item.modifyUsed && item.prevScore;
                       const canRewrite = item.status === "done" && !item.modifyUsed;
+                      // 학년 추출: "중1-1" -> "1학년"
+                      const gradeNum = item.grade.includes("중1") ? "1학년" : item.grade.includes("중2") ? "2학년" : "3학년";
+                      // 호 추출: "1학년 2호" -> "2호"
+                      const hourNum = item.hour.split(" ")[1];
                       return (
                         <div key={item.id} style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
-                          <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap" }}>
-                            {[item.publisher, item.grade, item.hour].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{v}</span>)}
-                            <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, padding: "2px 0" }}>선생님: {item.teacher}</span>
+                          <div style={{ display: "flex", gap: 5, marginBottom: 10, flexWrap: "wrap", alignItems: "center" }}>
+                            <span style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{gradeNum}</span>
+                            <span style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20 }}>{hourNum}</span>
+                            <span style={{ fontSize: 11, color: "#6B7280", fontWeight: 600 }}>선생님: {item.teacher}</span>
                           </div>
                           
                           <p style={{ fontSize: 15, fontWeight: 700, color: D, margin: "0 0 8px", lineHeight: 1.4 }}>{item.title}</p>
@@ -1309,9 +1427,6 @@
               <button onClick={tryLeave} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 20, color: D3, padding: 0 }}>←</button>
               <div style={{ flex: 1 }}>
                 <h1 style={{ fontSize: 20, fontWeight: 700, color: D, margin: 0 }}>{isRewrite ? "고쳐쓰기" : "과제 작성하기"}</h1>
-                <div style={{ display: "flex", gap: 5, marginTop: 6, flexWrap: "wrap" }}>
-                  {[editItem.publisher, editItem.grade, editItem.unit].map(v => <span key={v} style={{ fontSize: 11, background: B, color: D3, padding: "2px 9px", borderRadius: 20, fontWeight: 500 }}>{v}</span>)}
-                </div>
               </div>
             </div>
             <div style={{ background: "#fff", borderRadius: 12, padding: "14px 16px", marginBottom: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
@@ -1443,45 +1558,47 @@
         const avgScore = Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length);
 
         return (
-          <div style={{ minHeight: "100vh", background: "#F9FAFB", paddingBottom: 100 }}>
+          <div style={{ minHeight: "100vh", background: "#F9FAFB" }}>
             {/* 헤더 */}
-            <div style={{ background: "#3B82F6", padding: "20px 20px 24px", color: "#fff" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <button onClick={() => setPage("home")} style={{ background: "none", border: "none", color: "#fff", fontSize: 20, cursor: "pointer", padding: 0 }}>←</button>
-                  <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>마이페이지</h1>
+            <div style={{ background: "#3B82F6", padding: "20px", color: "#fff" }}>
+              <div style={{ maxWidth: 768, margin: "0 auto" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <button onClick={() => setPage("home")} style={{ background: "none", border: "none", color: "#fff", fontSize: 20, cursor: "pointer", padding: 0 }}>←</button>
+                    <h1 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>내 성장 리포트</h1>
+                  </div>
+                  <div style={{ fontSize: 22 }}>⚙️</div>
                 </div>
-                <div style={{ fontSize: 22 }}>⚙️</div>
-              </div>
-              
-              {/* 학생 정보 카드 */}
-              <div style={{ background: "#fff", borderRadius: 16, padding: "20px", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: "#6B7280", fontWeight: 600 }}>김</div>
-                  <div>
-                    <h2 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 2px" }}>김대교</h2>
-                    <p style={{ fontSize: 13, color: "#6B7280", margin: 0 }}>중학생 • 국어</p>
+                
+                {/* 학생 정보 카드 */}
+                <div style={{ background: "#fff", borderRadius: 16, padding: "20px", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
+                    <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: "#6B7280", fontWeight: 600 }}>김</div>
+                    <div>
+                      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 2px" }}>김대교</h2>
+                      <p style={{ fontSize: 13, color: "#6B7280", margin: 0 }}>중학생 • 국어</p>
+                    </div>
                   </div>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-                  <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
-                    <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>제출 완료</p>
-                    <p style={{ fontSize: 20, fontWeight: 700, color: "#111827", margin: 0 }}>{submittedCount}</p>
-                  </div>
-                  <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
-                    <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>평가 완료</p>
-                    <p style={{ fontSize: 20, fontWeight: 700, color: "#111827", margin: 0 }}>{doneCount}</p>
-                  </div>
-                  <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
-                    <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>평균 점수</p>
-                    <p style={{ fontSize: 20, fontWeight: 700, color: "#3B82F6", margin: 0 }}>{avgScore}점</p>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+                    <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
+                      <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>제출 완료</p>
+                      <p style={{ fontSize: 20, fontWeight: 700, color: "#111827", margin: 0 }}>{submittedCount}</p>
+                    </div>
+                    <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
+                      <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>평가 완료</p>
+                      <p style={{ fontSize: 20, fontWeight: 700, color: "#111827", margin: 0 }}>{doneCount}</p>
+                    </div>
+                    <div style={{ background: "#F9FAFB", padding: 12, borderRadius: 10, textAlign: "center", border: "1px solid #E5E7EB" }}>
+                      <p style={{ fontSize: 11, color: "#6B7280", fontWeight: 600, marginBottom: 4 }}>평균 점수</p>
+                      <p style={{ fontSize: 20, fontWeight: 700, color: "#3B82F6", margin: 0 }}>{avgScore}점</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* 컨텐츠 영역 */}
-            <div style={{ padding: "20px 16px" }}>
+            <div style={{ padding: "20px", maxWidth: 768, margin: "0 auto" }}>
               {/* 탭 */}
               <div style={{ background: "#fff", borderRadius: 12, padding: "6px", marginBottom: 20, boxShadow: "0 1px 3px rgba(0,0,0,0.08)", display: "flex", gap: 6 }}>
                 <button onClick={() => setMyPageTab("growth")} style={{ flex: 1, padding: "14px 0", borderRadius: 8, border: "none", background: myPageTab === "growth" ? "#3B82F6" : "transparent", color: myPageTab === "growth" ? "#fff" : "#6B7280", fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>성장 분석</button>

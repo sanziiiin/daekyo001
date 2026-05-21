@@ -636,7 +636,6 @@
       const [showCurriculumPopup, setShowCurriculumPopup] = useState(false);
       const [curriculumGrade, setCurriculumGrade] = useState("1학년");
       const [curriculumHour, setCurriculumHour] = useState("1호");
-      const [showMoreMenu, setShowMoreMenu] = useState(false);
       const [myPageTab, setMyPageTab] = useState("growth");
       const [expandedSections, setExpandedSections] = useState({
         growthTrend: true,
@@ -1214,32 +1213,19 @@
               </div>
             )}
             <div style={{ maxWidth: 768, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              {/* 헤더 */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <h1 style={{ fontSize: 22, fontWeight: 700, color: D, margin: 0 }}>수행평가</h1>
-                  <p style={{ fontSize: 13, color: "#9CA3AF", margin: "4px 0 0" }}>과제 목록을 확인하세요</p>
+                  <h1 style={{ fontSize: 22, fontWeight: 800, color: D, margin: "0 0 4px 0" }}>수행평가</h1>
+                  <p style={{ fontSize: 13, color: "#6B7280", margin: 0 }}>안녕하세요! 김대교님</p>
                 </div>
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <div style={{ position: "relative" }}>
-                    <button onClick={() => setShowMoreMenu(!showMoreMenu)} style={{ padding: "8px 14px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#6B7280", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>⋮ 더보기</button>
-                    {showMoreMenu && (
-                      <div style={{ position: "absolute", right: 0, top: "calc(100% + 4px)", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.1)", minWidth: 160, zIndex: 10 }}>
-                        <button onClick={() => { setShowCurriculumPopup(true); setShowMoreMenu(false); }} style={{ width: "100%", padding: "12px 16px", border: "none", background: "transparent", textAlign: "left", fontSize: 13, fontWeight: 500, color: D, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
-                          <span>📚</span><span>단원 연계표</span>
-                        </button>
-                        <button onClick={() => setShowMoreMenu(false)} style={{ width: "100%", padding: "12px 16px", border: "none", background: "transparent", textAlign: "left", fontSize: 13, fontWeight: 500, color: D, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, borderTop: "1px solid #F3F4F6" }}>
-                          <span>📖</span><span>학습 가이드</span>
-                        </button>
-                        <button onClick={() => setShowMoreMenu(false)} style={{ width: "100%", padding: "12px 16px", border: "none", background: "transparent", textAlign: "left", fontSize: 13, fontWeight: 500, color: D, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, borderTop: "1px solid #F3F4F6" }}>
-                          <span>❓</span><span>FAQ</span>
-                        </button>
-                        <button onClick={() => setShowMoreMenu(false)} style={{ width: "100%", padding: "12px 16px", border: "none", background: "transparent", textAlign: "left", fontSize: 13, fontWeight: 500, color: D, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, borderTop: "1px solid #F3F4F6" }}>
-                          <span>⚙️</span><span>설정</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  <button onClick={() => setPage("intro")} style={{ padding: "8px 14px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 12, fontWeight: 600, color: "#6B7280", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, whiteSpace: "nowrap" }}>← 처음으로</button>
+                  <button onClick={() => setShowCurriculumPopup(true)} style={{ padding: "8px 14px", background: "#EFF6FF", color: "#2563EB", border: "1px solid #3B82F6", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
+                    수능평가 단원 연계표
+                  </button>
+                  <button onClick={() => { if(confirm("로그아웃 하시겠습니까?")) setPage("intro"); }} style={{ width: 36, height: 36, borderRadius: 8, border: "1px solid #D1D5DB", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18 }}>
+                    ⎋
+                  </button>
                 </div>
               </div>
 
@@ -1249,14 +1235,14 @@
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                       <span style={{ fontSize: 20 }}>📊</span>
-                      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#fff", margin: 0 }}>내 성장 리포트</h3>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#fff", margin: 0 }}>김대교님 성장 리포트</h3>
                     </div>
                     <div style={{ display: "flex", gap: 12, fontSize: 13, color: "rgba(255,255,255,0.95)", fontWeight: 500 }}>
-                      <span>제출 {TASK_DATA.filter(t => t.status === "submitted" || t.status === "evaluating" || t.status === "done").length}개</span>
+                      <span>제출 완료 {TASK_DATA.filter(t => t.status === "submitted").length}건</span>
                       <span>•</span>
-                      <span>평가완료 {TASK_DATA.filter(t => t.status === "done").length}개</span>
+                      <span>평가 완료 {TASK_DATA.filter(t => t.status === "done").length}건</span>
                       <span>•</span>
-                      <span>평균 77점</span>
+                      <span>평균 점수 75점</span>
                     </div>
                   </div>
                   <div style={{ fontSize: 24, color: "#fff" }}>→</div>

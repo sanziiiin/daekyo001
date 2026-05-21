@@ -1142,6 +1142,17 @@
         return (
           <div style={{ background: "#F9FAFB", minHeight: "100vh", padding: "20px" }}>
             {toast && <Toast msg={toast} />}
+            {modal?.type === "logout" && (
+              <div onClick={() => setModal(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "28px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 24px", textAlign: "center" }}>정말 나가시겠어요?</h3>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    <button onClick={() => setModal(null)} style={{ flex: 1, padding: "12px", borderRadius: 10, border: "1.5px solid #E5E7EB", background: "#fff", color: "#6B7280", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>취소</button>
+                    <button onClick={() => { setModal(null); setPage("intro"); }} style={{ flex: 1, padding: "12px", borderRadius: 10, border: "none", background: "#2563EB", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>로그아웃</button>
+                  </div>
+                </div>
+              </div>
+            )}
             {showCurriculumPopup && (
               <div onClick={() => setShowCurriculumPopup(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
                 <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 600, width: "100%", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", display: "flex", flexDirection: "column" }}>
@@ -1245,7 +1256,7 @@
                   <button onClick={() => setShowCurriculumPopup(true)} style={{ padding: "8px 14px", background: "#EFF6FF", color: "#2563EB", border: "1px solid #3B82F6", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
                     수능평가 단원 연계표
                   </button>
-                  <button onClick={() => { if(confirm("로그아웃 하시겠습니까?")) setPage("intro"); }} style={{ width: 36, height: 36, borderRadius: 8, border: "1px solid #D1D5DB", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18 }}>
+                  <button onClick={() => setModal({ type: "logout" })} style={{ width: 36, height: 36, borderRadius: 8, border: "1px solid #D1D5DB", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: 18 }}>
                     ⎋
                   </button>
                 </div>
@@ -1433,9 +1444,15 @@
           {modal?.type === "submit" && (
             <div onClick={() => setModal(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
               <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "28px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 12px", textAlign: "center" }}>과제를 제출할까요?</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 12px", textAlign: "center" }}>
+                  {isRewrite ? "고쳐쓰기를 제출할까요?" : "과제를 제출할까요?"}
+                </h3>
                 <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px", textAlign: "center", lineHeight: 1.6 }}>
-                  평가 기준을 모두 충족하면<br />더 좋은 점수를 받을 수 있어요!
+                  {isRewrite ? (
+                    <>이전 제출 내용과 비교해서<br />평가받아요</>
+                  ) : (
+                    <>평가 기준을 모두 충족하면<br />더 좋은 점수를 받을 수 있어요!</>
+                  )}
                 </p>
                 <div style={{ display: "flex", gap: 10 }}>
                   <button onClick={() => setModal(null)} style={{ flex: 1, padding: "12px", borderRadius: 10, border: "1.5px solid #E5E7EB", background: "#fff", color: "#6B7280", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>취소</button>

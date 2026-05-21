@@ -1282,6 +1282,12 @@
                 </div>
               </div>
               
+              {/* 탭 */}
+              <div style={{ display: "flex", gap: 8, borderBottom: "2px solid #E5E7EB" }}>
+                <button onClick={() => setActiveTab("writing")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "writing" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "writing" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>작성 과제</button>
+                <button onClick={() => setActiveTab("submitted")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "submitted" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "submitted" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>제출 과제</button>
+              </div>
+              
               {/* 필터 영역 */}
               <div style={{ background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
@@ -1314,12 +1320,6 @@
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {hasFilter && <button onClick={() => { setFGrade(""); setFHour(""); setFStatus(""); setSearchText(""); setStartDate(""); setEndDate(""); }} style={{ marginLeft: "auto", padding: "6px 12px", background: B, border: "none", borderRadius: 8, fontSize: 12, fontWeight: 600, color: D3, cursor: "pointer" }}>초기화</button>}
                 </div>
-              </div>
-              
-              {/* 탭 */}
-              <div style={{ display: "flex", gap: 8, borderBottom: "2px solid #E5E7EB" }}>
-                <button onClick={() => setActiveTab("writing")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "writing" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "writing" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>작성 과제</button>
-                <button onClick={() => setActiveTab("submitted")} style={{ flex: 1, padding: "12px", background: "none", border: "none", fontSize: 15, fontWeight: 700, color: activeTab === "submitted" ? "#2563EB" : "#9CA3AF", borderBottom: activeTab === "submitted" ? "3px solid #2563EB" : "none", cursor: "pointer", marginBottom: -2 }}>제출 과제</button>
               </div>
               
               {/* 작성 과제 탭 */}

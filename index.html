@@ -542,13 +542,14 @@
         } else { 
           setList(prev => prev.map(r => r.id === editId ? { ...r, status: "submitted", submitAt: new Date().toISOString().slice(0, 16).replace("T", " ") } : r)); 
         } 
-        // 모달을 '제출 완료' 상태로 변경 → 1.2초 후 자동 닫기 + 제출 과제 탭으로 이동
+        // 컨펌 모달 → 제출 완료 모달로 전환 (사용자가 [확인] 클릭 시 닫힘)
         setModal({ type: "submitted" });
-        setTimeout(() => {
-          setModal(null);
-          setActiveTab("submitted");
-          setPage("home");
-        }, 1200);
+      };
+      // 제출 완료 모달 [확인] 클릭 → 모달 닫고 '제출 과제' 탭으로 이동
+      const confirmSubmitted = () => {
+        setModal(null);
+        setActiveTab("submitted");
+        setPage("home");
       };
       const tryLeave = () => { if (isDirty) setModal({ type: "leave" }); else setPage("home"); };
       const confirmLeave = () => { setModal(null); setPage("home"); };
@@ -1010,8 +1011,7 @@
                     과제를 제출할까요?
                   </h3>
                   <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px", textAlign: "center", lineHeight: 1.6 }}>
-                    <strong style={{ color: "#111827" }}>제출 후에는 수정할 수 없어요.</strong><br />
-                    제출한 과제는 '제출 과제' 탭에서 확인하세요.
+                    제출 후에는 과제를 수정할 수 없어요.
                   </p>
                   <div style={{ display: "flex", gap: 10 }}>
                     <button onClick={() => setModal(null)} style={{ flex: 1, padding: "12px", borderRadius: 10, border: "1.5px solid #E5E7EB", background: "#fff", color: "#6B7280", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>취소</button>
@@ -1022,9 +1022,16 @@
             )}
             {modal?.type === "submitted" && (
               <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-                <div style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "32px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", textAlign: "center" }}>
-                  <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: 0 }}>제출되었습니다.</h3>
+                <div style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "28px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 12px", textAlign: "center" }}>
+                    {isRewrite ? "고쳐쓰기를 제출하였습니다." : "제출을 완료하였습니다."}
+                  </h3>
+                  <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px", textAlign: "center", lineHeight: 1.6 }}>
+                    {isRewrite ? "결과는 '제출 과제' 탭에서 확인하세요." : "제출한 과제는 '제출 과제' 탭에서 확인하세요."}
+                  </p>
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <button onClick={confirmSubmitted} style={{ minWidth: 140, padding: "12px 32px", borderRadius: 10, border: "none", background: "#2563EB", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>확인</button>
+                  </div>
                 </div>
               </div>
             )}
@@ -1334,14 +1341,7 @@
                   {isRewrite ? "고쳐쓰기를 제출할까요?" : "과제를 제출할까요?"}
                 </h3>
                 <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px", textAlign: "center", lineHeight: 1.6 }}>
-                  {isRewrite ? (
-                    <>이전 제출 내용과 비교해서<br />평가받아요</>
-                  ) : (
-                    <>
-                      <strong style={{ color: "#111827" }}>제출 후에는 수정할 수 없어요.</strong><br />
-                      제출한 과제는 '제출 과제' 탭에서 확인하세요.
-                    </>
-                  )}
+                  {isRewrite ? "이전 제출 내용과 비교해서 평가받아요." : "제출 후에는 과제를 수정할 수 없어요."}
                 </p>
                 <div style={{ display: "flex", gap: 10 }}>
                   <button onClick={() => setModal(null)} style={{ flex: 1, padding: "12px", borderRadius: 10, border: "1.5px solid #E5E7EB", background: "#fff", color: "#6B7280", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>취소</button>
@@ -1352,9 +1352,16 @@
           )}
           {modal?.type === "submitted" && (
             <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-              <div style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "32px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)", textAlign: "center" }}>
-                <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: 0 }}>제출되었습니다.</h3>
+              <div style={{ background: "#fff", borderRadius: 16, maxWidth: 400, width: "100%", padding: "28px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: "0 0 12px", textAlign: "center" }}>
+                  {isRewrite ? "고쳐쓰기를 제출하였습니다." : "제출을 완료하였습니다."}
+                </h3>
+                <p style={{ fontSize: 14, color: "#6B7280", margin: "0 0 24px", textAlign: "center", lineHeight: 1.6 }}>
+                  {isRewrite ? "결과는 '제출 과제' 탭에서 확인하세요." : "제출한 과제는 '제출 과제' 탭에서 확인하세요."}
+                </p>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <button onClick={confirmSubmitted} style={{ minWidth: 140, padding: "12px 32px", borderRadius: 10, border: "none", background: "#2563EB", color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>확인</button>
+                </div>
               </div>
             </div>
           )}

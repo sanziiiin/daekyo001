@@ -189,6 +189,47 @@
       }
     };
 
+    // 글 형식별 성취도 — 상위 13개 장르(CMS 표시명) 기준, count = 학기 내 작성 편수
+    // 한 장르가 3편 이상 모이면 trends에 회차별 점수 추이 제공
+    // 어문개발팀 기준: 상위 13개 장르 ↔ 하위 장르 전체 목록 (하위 장르는 고정 분류, 카운팅 단위 아님)
+    const SUBGENRE_MAP = {
+      '설명·정보 전달형': ['설명문', '안내문', '방법 설명문', '대상·비교 설명문', '원인·결과 설명문', '장소 소개 설명문', '사용 설명서', '감정 사전'],
+      '주장·설득형': ['주장문', '논설문', '건의문·제안문', '찬반 의견 글', '모의재판·판결문'],
+      '보고·조사형': ['관찰 보고서', '조사·탐구 보고서', '실험 보고서', '활동 보고서'],
+      '독서·서평형': ['독서감상문', '서평', '독서토론문'],
+      '감상·문학형': ['감상문', '작품 해석문', '문학 비평문', '갈등 분석문', '소설 서평'],
+      '발표·말하기형': ['정보 전달 발표문', '의견 발표문'],
+      '토의·협의형': ['문제 해결 토의'],
+      '토론·논박형': ['찬반 토론·토론 후 의견 정리', '반론문'],
+      '매체·자료해석형': ['기사문·뉴스 분석문', '광고 분석문', '그래프 해석문', '매체 비평문', '광고·포스터 글', 'SNS·블로그 글'],
+      '실용·관계형': ['편지·마음 전하는 글', '자기소개', '면담·인터뷰 글', '직업 포트폴리오'],
+      '서사·성찰형': ['생활문', '성찰문', '수필', '기행문', '진로 탐색'],
+      '창작형': ['창작', '시 창작'],
+      '재구성형': ['이야기 재구성', '극본', '관점 바꾸어 쓰기']
+    };
+
+    const GENRE_DATA = {
+      term1: {
+        label: '1학기 (1~8호)',
+        items: [
+          { name: '감상·문학형', count: 1 },
+          { name: '설명·정보 전달형', count: 2 },
+          { name: '보고·조사형', count: 1 }
+        ],
+        trends: {}
+      },
+      term2: {
+        label: '2학기 (9~16호)',
+        items: [
+          { name: '주장·설득형', count: 3 },
+          { name: '설명·정보 전달형', count: 2 }
+        ],
+        trends: {
+          '주장·설득형': { labels: ['9호', '12호', '15호'], scores: [72, 80, 88] }
+        }
+      }
+    };
+
     function TaskGuide({ rubricType }) {
       const info = TASK_INFO[rubricType] || TASK_INFO.poem;
       return (
@@ -310,6 +351,100 @@
       }, [data, termLabel, compareData, compareLabel]);
 
       return <canvas ref={chartRef} style={{ width: '100%', height: '220px' }} />;
+    }
+
+    // 글 형식별 성취도 — 장르별 점수 추이 라인차트
+    function GenreTrendChart({ genreName, trend }) {
+      const chartRef = useRef(null);
+      const chartInstance = useRef(null);
+      useEffect(() => {
+        if (chartInstance.current) chartInstance.current.destroy();
+        const ctx = chartRef.current.getContext('2d');
+        chartInstance.current = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: trend.labels,
+            datasets: [{
+              label: genreName,
+              data: trend.scores,
+              borderColor: '#3B82F6',
+              backgroundColor: 'rgba(59, 130, 246, 0.05)',
+              tension: 0.4,
+              borderWidth: 2.5,
+              pointRadius: 4,
+              pointBackgroundColor: '#3B82F6',
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'bottom',
+                labels: { usePointStyle: true, padding: 12, font: { size: 11, weight: '500' }, color: '#6B7280' }
+              },
+              title: {
+                display: true,
+                text: genreName,
+                font: { size: 13, weight: '600' },
+                color: '#374151',
+                padding: { bottom: 12 }
+              }
+            },
+            scales: {
+              y: { beginAtZero: true, max: 100, ticks: { stepSize: 25, color: '#9CA3AF', font: { size: 11 } }, grid: { color: '#F3F4F6' }, border: { display: false } },
+              x: { ticks: { color: '#6B7280', font: { size: 11 } }, grid: { display: false }, border: { display: false } }
+            }
+          }
+        });
+        return () => { if (chartInstance.current) chartInstance.current.destroy(); };
+      }, [genreName, trend]);
+      return (
+        <div style={{ position: 'relative', width: '100%', height: '220px' }}>
+          <canvas ref={chartRef} />
+        </div>
+      );
+    }
+
+    // 글 형식별 성취도 — 학기 블록 (편수 요약 + 3편 이상 장르 추이)
+    function GenreTermBlock({ term, isLast }) {
+      const trendNames = Object.keys(term.trends);
+      return (
+        <div style={{ marginBottom: isLast ? 16 : 24 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: "#374151", margin: "0 0 10px" }}>{term.label}</p>
+          <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: "left", fontSize: 11, fontWeight: 600, color: "#9CA3AF", padding: "0 0 8px", borderBottom: "1px solid #E5E7EB" }}>상위 장르</th>
+                <th style={{ textAlign: "right", fontSize: 11, fontWeight: 600, color: "#9CA3AF", padding: "0 0 8px", borderBottom: "1px solid #E5E7EB", width: 52 }}>편수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {term.items.map((g, i) => (
+                <tr key={i}>
+                  <td style={{ padding: "12px 12px 12px 0", borderBottom: "1px solid #F3F4F6", verticalAlign: "top" }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "#111827", marginBottom: 4 }}>{g.name}</div>
+                    <div style={{ fontSize: 11.5, color: "#9CA3AF", lineHeight: 1.6 }}>{(SUBGENRE_MAP[g.name] || []).join(", ")}</div>
+                  </td>
+                  <td style={{ fontSize: 13, fontWeight: 600, color: "#111827", textAlign: "right", padding: "12px 0", borderBottom: "1px solid #F3F4F6", verticalAlign: "top" }}>{g.count}편</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {trendNames.length > 0 ? (
+            trendNames.map(name => (
+              <div key={name} style={{ marginTop: 14 }}>
+                <GenreTrendChart genreName={name} trend={term.trends[name]} />
+                <p style={{ fontSize: 11, color: "#9CA3AF", textAlign: "center", margin: "2px 0 0" }}>※ 한 장르를 3편 이상 쓰면 추이 그래프가 생겨요</p>
+              </div>
+            ))
+          ) : (
+            <p style={{ fontSize: 12, color: "#9CA3AF", margin: "10px 0 0", lineHeight: 1.6 }}>아직 한 장르를 3편 이상 쓰지 않아 추이 그래프는 없어요.</p>
+          )}
+        </div>
+      );
     }
 
 
@@ -479,6 +614,7 @@
       const [expandedSections, setExpandedSections] = useState({
         growthTrend: true,
         nationalCompare: false,
+        genreAchievement: false,
         errorPatterns: true,
         errorImprovement: false
       });
@@ -1615,6 +1751,24 @@
                           <p style={{ fontSize: 12, color: "#166534", margin: 0 }}>
                             🎉 전국 평균보다 <strong>{(RELATIVE_DATA.myAvg - RELATIVE_DATA.nationalAvg).toFixed(1)}점 높아요!</strong>
                           </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 글 형식별 성취도 */}
+                  <div style={{ background: "#fff", borderRadius: 12, marginBottom: 16, boxShadow: "0 1px 3px rgba(0,0,0,0.08)", overflow: "hidden" }}>
+                    <div onClick={() => toggleSection("genreAchievement")} style={{ padding: "16px 20px", background: "#F9FAFB", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
+                      <h3 style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: 0 }}>📚 글 형식별 성취도</h3>
+                      <span style={{ fontSize: 18, color: "#6B7280" }}>{expandedSections.genreAchievement ? "▼" : "▶"}</span>
+                    </div>
+                    {expandedSections.genreAchievement && (
+                      <div style={{ padding: 20 }}>
+                        <p style={{ fontSize: 12, color: "#9CA3AF", margin: "0 0 18px", lineHeight: 1.6 }}>지난 6개월 동안 어떤 형식의 글을 많이 썼는지 보여줘요.</p>
+                        <GenreTermBlock term={GENRE_DATA.term1} />
+                        <GenreTermBlock term={GENRE_DATA.term2} isLast />
+                        <div style={{ background: "#F0F9FF", padding: 12, borderRadius: 8, borderLeft: "3px solid #3B82F6" }}>
+                          <p style={{ fontSize: 12, color: "#1E40AF", lineHeight: 1.7, margin: 0 }}>💡 2학기엔 <strong>주장·설득형</strong>을 3편이나 썼어요! 점수도 <strong>72점 → 88점</strong>으로 쑥 올랐네요 👏</p>
                         </div>
                       </div>
                     )}

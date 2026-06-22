@@ -11,6 +11,680 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
+
+    /* ===== 결과서(result) 화면 전용 스타일 ===== */
+
+.container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    
+    /* 헤더 */
+    .header {
+      background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
+      color: white;
+      padding: 48px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, 30px) scale(1.1); }
+    }
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .header .subtitle {
+      font-size: 15px;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+    .header-info {
+      position: absolute;
+      bottom: 24px;
+      right: 32px;
+      text-align: right;
+      font-size: 13px;
+      z-index: 1;
+    }
+    .header-info div {
+      margin-bottom: 4px;
+      opacity: 0.95;
+    }
+    .header-info .label {
+      display: inline-block;
+      min-width: 70px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    /* 과제명 */
+    .task-title {
+      background: white;
+      margin: 24px 16px 0;
+      padding: 20px 32px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .task-title h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+    }
+    
+    /* 선생님 총평 */
+    .teacher-comment {
+      background: white;
+      margin: 24px 16px;
+      padding: 24px 32px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::before {
+      content: '│';
+      color: #3B82F6;
+      font-weight: 800;
+      font-size: 18px;
+    }
+    .teacher-comment-text {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.8;
+      padding: 16px;
+      background: #F9FAFB;
+      border-radius: 10px;
+      border-left: 4px solid #3B82F6;
+    }
+    
+    /* 2단 레이아웃 */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 0 16px 24px;
+    }
+    .col-left, .col-right {
+      background: white;
+      padding: 24px 32px 32px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    /* 영역별 평가 */
+    .score-box {
+      background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+      padding: 32px 24px;
+      border-radius: 16px;
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+    .score-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      opacity: 0.95;
+    }
+    .score-big {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .score-big span {
+      font-size: 20px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    .score-sub {
+      font-size: 13px;
+      opacity: 0.85;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+    .diamond-chart {
+      width: 100%;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    
+    /* 영역별 평가 상세 (안2: 도넛 + 가로 배치) */
+    .rubric-card {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 20px 24px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .rubric-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+    .rubric-donut {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
+    }
+    .rubric-donut-center {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .rubric-donut-score {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .rubric-donut-max {
+      font-size: 11px;
+      color: #9CA3AF;
+      font-weight: 600;
+      margin-left: 1px;
+    }
+    .rubric-donut-percent {
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+    .rubric-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .rubric-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .rubric-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .rubric-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .rubric-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .rubric-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .rubric-comment {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.7;
+      margin: 0;
+    }
+    
+    @media (max-width: 640px) {
+      .rubric-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+    }
+    
+    /* 영역별 성장 수준 */
+    .growth-level-section {
+      background: white;
+      padding: 24px 32px 32px;
+      margin: 0 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .growth-level-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+      flex-shrink: 0;
+    }
+    .growth-level-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .growth-level-table th {
+      background: #F9FAFB;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: #6B7280;
+      border-bottom: 2px solid #E5E7EB;
+    }
+    .growth-level-table td {
+      padding: 16px;
+      font-size: 12px;
+      color: #374151;
+      line-height: 1.7;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .growth-level-table tr:last-child td {
+      border-bottom: none;
+    }
+    .level-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .level-badge.best {
+      background: #8B5CF6;
+      color: white;
+    }
+    .level-badge.good {
+      background: #3B82F6;
+      color: white;
+    }
+    .level-badge.normal {
+      background: #14B8A6;
+      color: white;
+    }
+    .level-badge.below {
+      background: #F59E0B;
+      color: white;
+    }
+    .level-badge.poor {
+      background: #EF4444;
+      color: white;
+    }
+    
+    /* KReaD 분석 */
+    .kread-section {
+      background: white;
+      padding: 24px 32px 32px;
+      margin: 0 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .kread-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .kread-card {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 20px 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .kread-card:hover {
+      background: #F0F9FF;
+      border-color: #BFDBFE;
+      transform: translateY(-2px);
+    }
+    .kread-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+    .kread-label {
+      font-size: 11px;
+      color: #6B7280;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .kread-value {
+      font-size: 15px;
+      font-weight: 800;
+      color: #3B82F6;
+      margin-bottom: 6px;
+    }
+    .kread-desc {
+      font-size: 10px;
+      color: #9CA3AF;
+      line-height: 1.4;
+    }
+    
+    /* 학생 글 원문 */
+    .student-text {
+      font-size: 14px;
+      color: #1F2937;
+      line-height: 2;
+      padding: 20px;
+      background: #FAFBFC;
+      border-radius: 8px;
+      border: 1px solid #E5E7EB;
+      min-height: 400px;
+    }
+    .student-text p {
+      margin-bottom: 16px;
+    }
+    .numbered-line {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .line-num {
+      color: #9CA3AF;
+      font-weight: 600;
+      min-width: 20px;
+    }
+    
+    /* 문단별 피드백 */
+    .feedback-item {
+      margin-bottom: 16px;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #F59E0B;
+      background: #FFFBEB;
+    }
+    .feedback-item.green {
+      border-left-color: #10B981;
+      background: #ECFDF5;
+    }
+    .feedback-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feedback-label.orange {
+      background: #F59E0B;
+      color: white;
+    }
+    .feedback-label.green {
+      background: #10B981;
+      color: white;
+    }
+    .feedback-text {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    .feedback-point {
+      font-size: 12px;
+      color: #6B7280;
+      padding-left: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    
+    /* 맞춤법/문법 */
+    .grammar-list {
+      margin-top: 16px;
+    }
+    .grammar-item {
+      margin-bottom: 16px;
+    }
+    .grammar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .grammar-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .grammar-count {
+      font-size: 14px;
+      font-weight: 800;
+      color: #6366F1;
+    }
+    .grammar-bar {
+      width: 100%;
+      height: 24px;
+      background: #F3F4F6;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .grammar-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.5s ease;
+    }
+    .grammar-bar-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+    
+    /* 조언 피드백 */
+    .advice-section {
+      margin-top: 16px;
+    }
+    .advice-item {
+      padding: 12px 16px;
+      background: #F0F9FF;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.7;
+      border-left: 3px solid #3B82F6;
+    }
+    
+    /* 강점/다음단계 */
+    .strength-item, .next-step-item {
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      background: #F9FAFB;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #E5E7EB;
+    }
+    .item-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .item-text {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.7;
+    }
+    
+    @media (max-width: 768px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+      .kread-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .header {
+        padding: 32px 20px;
+      }
+      .header h1 {
+        font-size: 22px;
+      }
+      .header-info {
+        position: static;
+        margin-top: 24px;
+        text-align: center;
+      }
+    }
+
+    /* 최상단 고정 탭바 */
+    .report-tabbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #fff;
+      border-bottom: 1px solid #E5E7EB;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .report-tabbar-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      display: flex;
+    }
+    .report-tab {
+      flex: 1;
+      padding: 16px 12px;
+      background: none;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      color: #9CA3AF;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      font-family: inherit;
+    }
+    .report-tab.active {
+      color: #2563EB;
+      border-bottom-color: #2563EB;
+    }
+    .report-tab .tab-sub {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      margin-top: 3px;
+    }
+    .report-tab.active .tab-sub { color: #60A5FA; }
+
+    /* 고쳐쓰기 안내 배너 */
+    .rewrite-banner {
+      max-width: 920px;
+      margin: 16px auto 0;
+      padding: 12px 16px;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #047857;
+    }
+
+    /* 점수 변화 배지 */
+    .delta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .delta-badge.up { background: #ECFDF5; color: #059669; }
+    .delta-badge.down { background: #FEF2F2; color: #DC2626; }
+    .delta-badge.same { background: #F3F4F6; color: #6B7280; }
+
+    .delta-big {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .delta-big.up { background: #ECFDF5; color: #059669; }
+
+    /* 수정된 문단 하이라이트 */
+    .numbered-line.changed {
+      background: #FFFBEB;
+      border-left: 3px solid #F59E0B;
+      padding-left: 9px;
+      border-radius: 6px;
+    }
+    .changed-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      color: #B45309;
+      background: #FEF3C7;
+      padding: 1px 7px;
+      border-radius: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .feedback-item.changed {
+      border: 1px solid #FCD34D;
+      background: #FFFBEB;
+    }
+
   </style>
 </head>
 <body>
@@ -595,6 +1269,682 @@
       );
     }
 
+
+    // ========== 결과서(result) 데이터 ==========
+    const RUBRIC_REWRITE = [
+      { 
+        id: 1, 
+        name: '과제 적합성', 
+        subcriteria: ['공통점·차이점 제시', '비교 기준의 적절성'],
+        score: 23, 
+        max: 25, 
+        percent: 92,
+        color: '#8B5CF6',
+        colorLight: '#EEEDFE',
+        colorDark: '#5B21B6',
+        barColor: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
+        opinion: 'House와 Home의 차이점을 명확한 기준으로 비교했고, 공통점과 차이를 잘 드러냈어요. 비교 기준도 적절하게 설정되었습니다.'
+      },
+      { 
+        id: 2, 
+        name: '내용 완성도', 
+        subcriteria: ['중심 내용의 명확성', '설명 내용의 구체성', '내용의 통일성'],
+        score: 33, 
+        max: 35, 
+        percent: 94,
+        color: '#3B82F6',
+        colorLight: '#E6F1FB',
+        colorDark: '#1E40AF',
+        barColor: 'linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)',
+        opinion: '중심 내용이 명확했고 개념 설명이 잘 되었어요. 설명이 구체적이고 어휘 사용이 자연스러웠어요.'
+      },
+      { 
+        id: 3, 
+        name: '조직과 전개', 
+        subcriteria: ['문단의 적절성', '문장의 연결'],
+        score: 17, 
+        max: 20, 
+        percent: 85,
+        color: '#14B8A6',
+        colorLight: '#E1F5EE',
+        colorDark: '#0F766E',
+        barColor: 'linear-gradient(90deg, #14B8A6 0%, #2DD4BF 100%)',
+        opinion: '도입-본론-마무리 흐름이 자연스러웠어요. 긴 문장이 있어 호흡을 잘게 끊으면 더 읽기 편해요.'
+      },
+      { 
+        id: 4, 
+        name: '표현과 규범', 
+        subcriteria: ['문장 표현의 적절성', '어휘·구사의 정확성'],
+        score: 16, 
+        max: 20, 
+        percent: 80,
+        color: '#F97316',
+        colorLight: '#FAECE7',
+        colorDark: '#9A3412',
+        barColor: 'linear-gradient(90deg, #F97316 0%, #FB923C 100%)',
+        opinion: '표현이 대체로 자연스럽고 맞춤법도 잘 지켰어요. 맞춤법과 문장 구조를 조금 더 다듬으면 더 좋은 글이 될 거예요.'
+      }
+    ];
+
+    // ===== 1차(고쳐쓰기 전) 영역별 평가 데이터 =====
+    const RUBRIC_ORIGINAL = [
+      {
+        id: 1, name: '과제 적합성', subcriteria: ['공통점·차이점 제시', '비교 기준의 적절성'],
+        score: 19, max: 25, percent: 76,
+        color: '#8B5CF6', colorLight: '#EEEDFE', colorDark: '#5B21B6',
+        barColor: 'linear-gradient(90deg, #8B5CF6 0%, #A78BFA 100%)',
+        opinion: 'House와 Home을 구분하려는 시도는 좋았지만, 비교 기준이 다소 모호해 차이점이 분명하게 드러나지 않았어요.'
+      },
+      {
+        id: 2, name: '내용 완성도', subcriteria: ['중심 내용의 명확성', '설명 내용의 구체성', '내용의 통일성'],
+        score: 26, max: 35, percent: 74,
+        color: '#3B82F6', colorLight: '#E6F1FB', colorDark: '#1E40AF',
+        barColor: 'linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)',
+        opinion: '중심 내용은 제시되었으나 설명이 추상적이라 구체성이 부족했어요. 예시를 보강하면 좋겠어요.'
+      },
+      {
+        id: 3, name: '조직과 전개', subcriteria: ['문단의 적절성', '문장의 연결'],
+        score: 13, max: 20, percent: 65,
+        color: '#14B8A6', colorLight: '#E1F5EE', colorDark: '#0F766E',
+        barColor: 'linear-gradient(90deg, #14B8A6 0%, #2DD4BF 100%)',
+        opinion: '문단 구분은 있으나 문장 간 연결이 매끄럽지 못해 흐름이 끊기는 부분이 있었어요.'
+      },
+      {
+        id: 4, name: '표현과 규범', subcriteria: ['문장 표현의 적절성', '어휘·구사의 정확성'],
+        score: 14, max: 20, percent: 70,
+        color: '#F97316', colorLight: '#FAECE7', colorDark: '#9A3412',
+        barColor: 'linear-gradient(90deg, #F97316 0%, #FB923C 100%)',
+        opinion: '맞춤법 오류가 일부 보이고 어휘 사용이 단조로워요. 표현을 다듬을 필요가 있어요.'
+      }
+    ];
+
+    // ===== 탭별 리포트 묶음 =====
+    const REPORTS = {
+      original: {
+        label: '1차 결과서',
+        totalScore: 72,
+        rankText: '상위 38%',
+        rubric: RUBRIC_ORIGINAL,
+        teacherComment: '민용아, 두 개념을 구분하려는 방향은 좋았어. 다만 차이점을 뒷받침하는 구체적인 설명과 예시가 부족해서 내용이 다소 추상적으로 느껴졌어. 문장 연결과 맞춤법도 함께 다듬으면 훨씬 좋은 글이 될 거야.',
+        growthLevels: { 1: '보통', 2: '보통', 3: '미흡', 4: '보통' },
+        kread: [
+          { icon: '📖', label: '어휘 수준', value: '중급', desc: '또래 평균 수준의 어휘' },
+          { icon: '🔗', label: '문장 연결', value: '미흡', desc: '접속어 활용이 부족해요' },
+          { icon: '🎯', label: '문장 다양성', value: '보통', desc: '문장 구조가 단조로워요' },
+          { icon: '🎨', label: '주제 일관도', value: '양호', desc: '주제는 비교적 유지됨' },
+          { icon: '👤', label: '표현 수준', value: '초급 3단', desc: '평균 수준의 표현력' },
+        ],
+        grammar: [
+          { name: '📝 철자 오류', score: 82 },
+          { name: '📐 띄어쓰기', score: 85 },
+          { name: '🔧 표현 문법', score: 74 },
+          { name: '📚 문장 유형성', score: 78 },
+          { name: '✍️ 어휘 선택 적절성', score: 76 },
+        ],
+        paragraphs: [
+          { num: 1, text: "사람들은 '집'이라는 말을 들으면 보통 건물을 떠올린다. 그런데 집에는 House와 Home이라는 뜻이 있다." , changed: false },
+          { num: 2, text: 'House는 건물을 말한다. 사람이 사는 곳이다.', changed: false },
+          { num: 3, text: 'Home은 가족이 있는 곳이다. 따뜻한 느낌이 든다.', changed: false },
+        ],
+        paraFeedback: [
+          { num: '1문단', cls: 'green', role: '도입 - 주제 제시', text: '주제를 소개했으나 House와 Home의 차이를 예고하는 부분이 약해요.', point: '', changed: false },
+          { num: '2문단', cls: 'green', role: '본문 - House 설명', text: '설명이 짧고 구체성이 부족해요.', point: '', changed: false },
+          { num: '3문단', cls: 'green', role: '본문 - Home 설명', text: 'Home의 의미를 더 구체적으로 풀어주면 좋겠어요.', point: '', changed: false },
+        ],
+      },
+      rewrite: {
+        label: '최종 결과서',
+        totalScore: 89,
+        rankText: '상위 12%',
+        rubric: RUBRIC_REWRITE,
+        teacherComment: '민용아, 고쳐쓰기를 통해 글이 훨씬 좋아졌어! House와 Home의 차이를 명확한 기준으로 비교했고, 구체적인 설명이 더해져 내용 완성도가 크게 올랐어. 문장 연결도 한결 자연스러워졌어.',
+        growthLevels: { 1: '우수', 2: '우수', 3: '보통', 4: '미흡' },
+        kread: [
+          { icon: '📖', label: '어휘 수준', value: '상급', desc: '또래 대비 풍부한 어휘' },
+          { icon: '🔗', label: '문장 연결', value: '양호', desc: '접속어 활용이 자연스러워요' },
+          { icon: '🎯', label: '문장 다양성', value: '보통', desc: '문장 길이·구조 변화 필요' },
+          { icon: '🎨', label: '주제 일관도', value: '우수', desc: '처음부터 끝까지 일관되게 유지' },
+          { icon: '👤', label: '표현 수준', value: '중급 2단', desc: '평균보다 높은 표현력' },
+        ],
+        grammar: [
+          { name: '📝 철자 오류', score: 94 },
+          { name: '📐 띄어쓰기', score: 96 },
+          { name: '🔧 표현 문법', score: 88 },
+          { name: '📚 문장 유형성', score: 92 },
+          { name: '✍️ 어휘 선택 적절성', score: 90 },
+        ],
+        paragraphs: [
+          { num: 1, text: "사람들은 '집'이라는 말을 들으면 단순히 거주하는 건물만을 떠올릴 수도 있지만, '집'에는 두 가지 의미가 있습니다. 그것이 바로 'House'와 'Home'의 의미입니다.", changed: true },
+          { num: 2, text: '첫째로, House는 물리적 공간을 의미합니다. 주로 건물이나 구조물을 뜻하며, 단순히 거주할 수 있는 장소를 나타냅니다.', changed: true },
+          { num: 3, text: '반면 Home은 정서적 의미를 가집니다. 가족과 함께하는 따뜻한 공간이며, 사랑과 안정을 느낄 수 있는 곳입니다.', changed: true },
+        ],
+        paraFeedback: [
+          { num: '1문단', cls: 'green', role: '도입 - 주제 제시', text: '주제에 대한 일반적 인식과 함께 글의 방향을 명확히 제시했어요.', point: '✓ House와 Home의 차이를 소개하는 방식이 아주 효과적입니다.', changed: true },
+          { num: '2문단', cls: 'green', role: '본문 - House 설명', text: 'House의 의미를 물리적 측면에서 명확하게 설명했어요.', point: '', changed: true },
+          { num: '3문단', cls: 'green', role: '본문 - Home 설명', text: 'Home의 정서적 의미를 잘 표현했어요. 대조가 효과적입니다.', point: '', changed: true },
+        ],
+      },
+    };
+
+    // 영역별 성장 수준 데이터
+    const GROWTH_LEVEL_DATA = [
+      {
+        id: 1,
+        name: '과제 적합성',
+        color: '#8B5CF6',
+        levels: [
+          { level: '최우수', desc: '과제의 요구를 정확히 이해하고 모든 조건을 충실하게 반영하여 내용을 매우 구체적이고 완성도 높게 드러냄.' },
+          { level: '우수', desc: '과제 조건을 대부분 충족했으며 핵심 내용을 비교적 구체적으로 제시함.' },
+          { level: '보통', desc: '기본적인 과제 조건을 반영하였으나 일부 내용이 다소 추상적이거나 구체성이 부족함.' },
+          { level: '미흡', desc: '과제 조건 반영이 불충분하고 내용이 추상적이거나 모호하게 드러남.' },
+          { level: '매우 미흡', desc: '과제 요구를 제대로 이해하지 못했거나 조건을 거의 반영하지 못하고 내용이 구체적이지 않음.' }
+        ],
+        currentLevel: '우수'
+      },
+      {
+        id: 2,
+        name: '내용 완성도',
+        color: '#3B82F6',
+        levels: [
+          { level: '최우수', desc: '중심 내용이 매우 명확하고 깊이 있으며 구체적이어서 전체적으로 통일성과 진정성이 느껴짐.' },
+          { level: '우수', desc: '중심 내용이 명확하고 구체적이며 전체적으로 통일성을 갖춤.' },
+          { level: '보통', desc: '중심 내용이 기본적으로 제시되어 있으나 일부 부분에서 깊이나 구체성이 다소 부족함.' },
+          { level: '미흡', desc: '중심 내용이 다소 모호하거나 통일성이 떨어지며 전체적으로 내용의 완성도가 낮음.' },
+          { level: '매우 미흡', desc: '중심 내용이 불명확하거나 거의 드러나지 않으며 통일성과 구성이 매우 부족함.' }
+        ],
+        currentLevel: '우수'
+      },
+      {
+        id: 3,
+        name: '조직과 전개',
+        color: '#14B8A6',
+        levels: [
+          { level: '최우수', desc: '구성이 매우 체계적이고 논리적이며 문단이 자연스럽게 이어지고 흐름이 매우 부드러움.' },
+          { level: '우수', desc: '구성이 체계적이고 논리적이며 문단 간 연결이 자연스러움.' },
+          { level: '보통', desc: '구성이 기본적으로 갖춰져 있으나 일부 흐름이 어색하거나 연결이 매끄럽지 못함.' },
+          { level: '미흡', desc: '구성이 불명확하거나 문단 간 연결이 부자연스럽고 전체적으로 논리적 흐름이 부족함.' },
+          { level: '매우 미흡', desc: '구성이 매우 부족하고 논리적 전개가 거의 이루어지지 않아 글의 흐름을 파악하기 어려움.' }
+        ],
+        currentLevel: '보통'
+      },
+      {
+        id: 4,
+        name: '표현과 규범',
+        color: '#F97316',
+        levels: [
+          { level: '최우수', desc: '표현이 대체로 자연스럽고 맞춤법·어휘·구사력이 모두 정확함.' },
+          { level: '우수', desc: '표현이 적절하고 맞춤법과 구사력이 전체적으로 통일성을 갖춤.' },
+          { level: '보통', desc: '표현이 기본적으로 제시되어 있으나 일부 부분에서 자연스러움과 규범 준수가 다소 미흡함.' },
+          { level: '미흡', desc: '표현이 부적절하거나 맞춤법 오류가 빈번하며 어휘 구사력이 부족함.' },
+          { level: '매우 미흡', desc: '표현이 매우 부적절하고 맞춤법 오류가 심각하며 어휘 구사력이 거의 드러나지 않음.' }
+        ],
+        currentLevel: '미흡'
+      }
+    ];
+
+    // ========== 결과서(result) 컴포넌트 ==========
+    function ResultPage({ initialTab = 'rewrite', onBack }) {
+      // 초기 탭은 부모(App)에서 전달 (original=1차 / rewrite=최종)
+      const [tab, setTab] = useState(initialTab);
+
+      const data = REPORTS[tab];
+      const prev = REPORTS.original; // 비교 기준(1차)
+      const RUBRIC_DATA = data.rubric;
+      const totalScore = data.totalScore;
+      const isRewrite = tab === 'rewrite';
+      const scoreDelta = data.totalScore - prev.totalScore;
+
+      // 영역별 점수 변화 (최종 탭에서 1차 대비)
+      const rubricDelta = (id) => {
+        const cur = data.rubric.find(r => r.id === id);
+        const old = prev.rubric.find(r => r.id === id);
+        if (!cur || !old) return 0;
+        return cur.score - old.score;
+      };
+
+      // 레이더 차트 그리기
+      const drawRadarChart = () => {
+        const centerX = 100;
+        const centerY = 100;
+        const maxRadius = 75;
+        const points = 4;
+        
+        // 배경 격자선
+        const gridLevels = [25, 50, 75, 100];
+        const gridPolygons = gridLevels.map(level => {
+          const radius = (maxRadius * level) / 100;
+          return Array.from({length: points}, (_, i) => {
+            const angle = (Math.PI * 2 * i) / points - Math.PI / 2;
+            return `${centerX + radius * Math.cos(angle)},${centerY + radius * Math.sin(angle)}`;
+          }).join(' ');
+        });
+        
+        // 데이터 폴리곤
+        const dataPolygon = RUBRIC_DATA.map((item, i) => {
+          const radius = (maxRadius * item.percent) / 100;
+          const angle = (Math.PI * 2 * i) / points - Math.PI / 2;
+          return `${centerX + radius * Math.cos(angle)},${centerY + radius * Math.sin(angle)}`;
+        }).join(' ');
+        
+        return (
+          <svg viewBox="0 0 200 200" style={{width: '100%', height: '100%'}}>
+            {/* 배경 격자선 */}
+            {gridPolygons.map((polygon, i) => (
+              <polygon 
+                key={i} 
+                points={polygon} 
+                fill="none" 
+                stroke="#E5E7EB" 
+                strokeWidth="1"
+              />
+            ))}
+            
+            {/* 축선 */}
+            {Array.from({length: points}, (_, i) => {
+              const angle = (Math.PI * 2 * i) / points - Math.PI / 2;
+              const x = centerX + maxRadius * Math.cos(angle);
+              const y = centerY + maxRadius * Math.sin(angle);
+              return (
+                <line 
+                  key={i}
+                  x1={centerX} 
+                  y1={centerY} 
+                  x2={x} 
+                  y2={y} 
+                  stroke="#E5E7EB" 
+                  strokeWidth="1"
+                />
+              );
+            })}
+            
+            {/* 데이터 영역 */}
+            <polygon 
+              points={dataPolygon} 
+              fill="rgba(99, 102, 241, 0.25)" 
+              stroke="#6366F1" 
+              strokeWidth="2.5"
+            />
+            
+            {/* 데이터 포인트 */}
+            {RUBRIC_DATA.map((item, i) => {
+              const radius = (maxRadius * item.percent) / 100;
+              const angle = (Math.PI * 2 * i) / points - Math.PI / 2;
+              const x = centerX + radius * Math.cos(angle);
+              const y = centerY + radius * Math.sin(angle);
+              return (
+                <circle 
+                  key={i}
+                  cx={x} 
+                  cy={y} 
+                  r="4" 
+                  fill={item.color}
+                  stroke="white"
+                  strokeWidth="2"
+                />
+              );
+            })}
+            
+            {/* 라벨 - 위치별 정확한 배치 */}
+            {/* 1. 맨 위: 과제 적합성 */}
+            <text x="100" y="12" textAnchor="middle" fontSize="10" fontWeight="600" fill="#374151">과제 적합성</text>
+            <text x="100" y="23" textAnchor="middle" fontSize="12" fontWeight="700" fill="#8B5CF6">{RUBRIC_DATA[0].percent}%</text>
+            
+            {/* 2. 오른쪽: 내용 완성도 */}
+            <text x="182" y="98" textAnchor="start" fontSize="10" fontWeight="600" fill="#374151">내용 완성도</text>
+            <text x="182" y="109" textAnchor="start" fontSize="12" fontWeight="700" fill="#3B82F6">{RUBRIC_DATA[1].percent}%</text>
+            
+            {/* 3. 하단: 조직과 전개 */}
+            <text x="100" y="185" textAnchor="middle" fontSize="10" fontWeight="600" fill="#374151">조직과 전개</text>
+            <text x="100" y="196" textAnchor="middle" fontSize="12" fontWeight="700" fill="#14B8A6">{RUBRIC_DATA[2].percent}%</text>
+            
+            {/* 4. 왼쪽: 표현과 규범 */}
+            <text x="18" y="98" textAnchor="end" fontSize="10" fontWeight="600" fill="#374151">표현과 규범</text>
+            <text x="18" y="109" textAnchor="end" fontSize="12" fontWeight="700" fill="#F97316">{RUBRIC_DATA[3].percent}%</text>
+          </svg>
+        );
+      };
+
+      return (
+        <div style={{ background: "#F3F4F6", minHeight: "100vh", paddingBottom: "48px" }}>
+          <div className="container">
+            <div style={{ maxWidth: 920, margin: "0 auto", padding: "16px 20px 0" }}>
+              <button onClick={onBack} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#6B7280", padding: "6px 4px" }}>← 뒤로가기</button>
+            </div>
+            {/* 헤더 */}
+            <div className="header">
+              <div className="header-content">
+                <h1>수행평가 결과 리포트</h1>
+                <p className="subtitle">House와 Home에 대한 비교하는 글 쓰기</p>
+              </div>
+              <div className="header-info">
+                <div><span className="label">학생</span>박민용 · 중1</div>
+                <div><span className="label">담당 교사</span>강지혜 선생님</div>
+                <div><span className="label">제출일</span>{isRewrite ? '2026.05.12 (고쳐쓰기)' : '2026.05.08'}</div>
+              </div>
+            </div>
+
+            {/* 결과서 탭 (과제 제목 위) */}
+            <div className="report-tabbar">
+              <div className="report-tabbar-inner">
+                <button
+                  className={`report-tab ${tab === 'original' ? 'active' : ''}`}
+                  onClick={() => setTab('original')}
+                >
+                  1차 결과서
+                  <span className="tab-sub">{REPORTS.original.totalScore}점</span>
+                </button>
+                <button
+                  className={`report-tab ${tab === 'rewrite' ? 'active' : ''}`}
+                  onClick={() => setTab('rewrite')}
+                >
+                  최종 결과서 (고쳐쓰기)
+                  <span className="tab-sub">{REPORTS.rewrite.totalScore}점</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 과제명 */}
+            <div className="task-title" style={{marginTop: "24px"}}>
+              <h2>House와 Home의 차이점과 특징을 정리하는 글 쓰기</h2>
+            </div>
+            
+            {/* 선생님 총평 */}
+            <div className="teacher-comment">
+              <div className="section-title">선생님 총평</div>
+              <div className="teacher-comment-text">
+                {data.teacherComment}
+              </div>
+            </div>
+            
+            {/* 영역별 평가 */}
+            <div style={{background: 'white', margin: '24px 16px', padding: '24px 32px 32px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)'}}>
+              <div className="section-title">영역별 평가</div>
+              
+              <div className="two-col" style={{margin: 0}}>
+                {/* 좌측: 종합 점수 */}
+                <div style={{background: 'transparent', padding: 0, boxShadow: 'none'}}>
+                  <div className="score-box">
+                    <div className="score-label">종합 점수</div>
+                    <div className="score-big">{totalScore}<span>/100점</span></div>
+                    <div className="score-sub">{data.rankText}</div>
+                    {isRewrite && scoreDelta !== 0 && (
+                      <div className={`delta-big ${scoreDelta > 0 ? 'up' : ''}`}>
+                        {scoreDelta > 0 ? '▲' : '▼'} 1차 대비 {scoreDelta > 0 ? '+' : ''}{scoreDelta}점
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* 우측: 레이더 차트 */}
+                <div style={{background: 'transparent', padding: 0, boxShadow: 'none'}}>
+                  <div className="diamond-chart">
+                    {drawRadarChart()}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* 영역별 평가 상세 */}
+            <div style={{background: 'white', margin: '0 16px 24px', padding: '24px 32px 32px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)'}}>
+              <div className="section-title">영역별 평가 상세</div>
+              
+              <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
+                {RUBRIC_DATA.map(item => {
+                  const radius = 40;
+                  const circumference = 2 * Math.PI * radius;
+                  const dashOffset = circumference * (1 - item.percent / 100);
+                  return (
+                    <div key={item.id} className="rubric-card">
+                      {/* 좌측: 도넛 차트 */}
+                      <div className="rubric-donut">
+                        <svg width="96" height="96" viewBox="0 0 96 96">
+                          <circle cx="48" cy="48" r={radius} fill="none" stroke="#F1F1EC" strokeWidth="7"/>
+                          <circle 
+                            cx="48" cy="48" r={radius} 
+                            fill="none" 
+                            stroke={item.color} 
+                            strokeWidth="7" 
+                            strokeLinecap="round"
+                            strokeDasharray={circumference}
+                            strokeDashoffset={dashOffset}
+                            transform="rotate(-90 48 48)"
+                            style={{transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)'}}
+                          />
+                        </svg>
+                        <div className="rubric-donut-center">
+                          <div>
+                            <span className="rubric-donut-score" style={{color: item.colorDark}}>{item.score}</span>
+                            <span className="rubric-donut-max">/{item.max}</span>
+                          </div>
+                          <div className="rubric-donut-percent" style={{color: item.color}}>{item.percent}%</div>
+                        </div>
+                      </div>
+                      
+                      {/* 우측: 정보 영역 */}
+                      <div className="rubric-body">
+                        {/* 번호 배지 + 루브릭명 */}
+                        <div className="rubric-head">
+                          <span className="rubric-badge" style={{background: item.colorLight, color: item.colorDark}}>{item.id}</span>
+                          <span className="rubric-title">{item.name}</span>
+                          {isRewrite && (() => {
+                            const d = rubricDelta(item.id);
+                            const cls = d > 0 ? 'up' : d < 0 ? 'down' : 'same';
+                            const arrow = d > 0 ? '▲' : d < 0 ? '▼' : '–';
+                            return (
+                              <span className={`delta-badge ${cls}`}>
+                                {arrow} {d > 0 ? '+' : ''}{d === 0 ? '변동 없음' : d + '점'}
+                              </span>
+                            );
+                          })()}
+                        </div>
+                        
+                        {/* 하위 루브릭 (태그형) */}
+                        <div className="rubric-tags">
+                          {item.subcriteria.map((sub, i) => (
+                            <span key={i} className="rubric-tag" style={{background: item.colorLight, color: item.colorDark}}>{sub}</span>
+                          ))}
+                        </div>
+                        
+                        {/* 평가 의견 */}
+                        <p className="rubric-comment">{item.opinion}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            {/* 영역별 성장 수준 */}
+            <div className="growth-level-section">
+              <div className="section-title">영역별 성장 수준 (수준)</div>
+              
+              <table className="growth-level-table">
+                <thead>
+                  <tr>
+                    <th style={{width: '15%'}}>상위 루브릭</th>
+                    <th style={{width: '12%'}}>수준</th>
+                    <th>성장 수준 설명</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {GROWTH_LEVEL_DATA.map(area => {
+                    return area.levels.map((levelInfo, idx) => {
+                      const badgeClass = 
+                        levelInfo.level === '최우수' ? 'best' :
+                        levelInfo.level === '우수' ? 'good' :
+                        levelInfo.level === '보통' ? 'normal' :
+                        levelInfo.level === '미흡' ? 'below' : 'poor';
+                      
+                      return (
+                        <tr key={`${area.id}-${idx}`}>
+                          {idx === 0 && (
+                            <td rowSpan={area.levels.length} style={{verticalAlign: 'middle', textAlign: 'center', background: '#F9FAFB', borderRight: '2px solid #E5E7EB'}}>
+                              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'}}>
+                                <div className="growth-level-number" style={{background: area.color, width: '28px', height: '28px', fontSize: '13px'}}>{area.id}</div>
+                                <div style={{fontSize: '13px', fontWeight: '700', color: '#111827'}}>{area.name}</div>
+                              </div>
+                            </td>
+                          )}
+                          <td style={{textAlign: 'center'}}>
+                            <div className={`level-badge ${badgeClass}`}>{levelInfo.level}</div>
+                          </td>
+                          <td style={{color: '#1F2937'}}>
+                            {levelInfo.desc}
+                          </td>
+                        </tr>
+                      );
+                    });
+                  })}
+                </tbody>
+              </table>
+            </div>
+            
+            {/* KReaD 분석 */}
+            <div className="kread-section">
+              <div className="section-title">KReaD 분석</div>
+              <div className="kread-cards">
+                {data.kread.map((k, i) => (
+                  <div key={i} className="kread-card">
+                    <div className="kread-icon">{k.icon}</div>
+                    <div className="kread-label">{k.label}</div>
+                    <div className="kread-value">{k.value}</div>
+                    <div className="kread-desc">{k.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* 학생 글 원문 + 문단별 피드백 */}
+            <div className="two-col">
+              <div className="col-left">
+                <div className="section-title">학생 글 원문 {isRewrite && <span style={{fontSize: 11, fontWeight: 600, color: '#B45309'}}>(노란 표시 = 고쳐쓴 부분)</span>}</div>
+                <div className="student-text">
+                  {data.paragraphs.map(p => (
+                    <div key={p.num} className={`numbered-line ${isRewrite && p.changed ? 'changed' : ''}`}>
+                      <span className="line-num">{p.num}</span>
+                      <p>
+                        {p.text}
+                        {isRewrite && p.changed && <span className="changed-pill">수정됨</span>}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="col-right">
+                <div className="section-title">문단별 피드백</div>
+                {data.paraFeedback.map((f, i) => (
+                  <div key={i} className={`feedback-item ${f.cls} ${isRewrite && f.changed ? 'changed' : ''}`}>
+                    <div className={`feedback-label ${f.cls}`}>
+                      {f.num}
+                      {isRewrite && f.changed && <span className="changed-pill">개선</span>}
+                    </div>
+                    <div className="feedback-text">{f.role}</div>
+                    <div className="feedback-text">{f.text}</div>
+                    {f.point && <div className="feedback-point">{f.point}</div>}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* 맞춤법/문법 + 조언 */}
+            <div className="two-col">
+              <div className="col-left">
+                <div className="section-title">맞춤법 · 문법 - 세부 항목</div>
+                <div className="grammar-list">
+                  {data.grammar.map((g, i) => (
+                    <div key={i} className="grammar-item">
+                      <div className="grammar-header">
+                        <span className="grammar-name">{g.name}</span>
+                        <span className="grammar-count">{g.score}</span>
+                      </div>
+                      <div className="grammar-bar">
+                        <div className="grammar-bar-fill" style={{width: g.score + "%"}}>
+                          <span className="grammar-bar-text">{g.score}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="col-right">
+                <div className="section-title">조언 피드백</div>
+                <div className="advice-section">
+                  <div className="advice-item">더 다양한 접속어를 사용하면 문장의 연결이 자연스러워요.</div>
+                  <div className="advice-item">문장 길이를 조절하면 읽기가 더 편해집니다.</div>
+                  <div className="advice-item">구체적인 예시를 추가하면 설득력이 높아져요.</div>
+                  <div className="advice-item">결론 부분에서 주제를 다시 한 번 강조해보세요.</div>
+                  <div className="advice-item">비유나 은유를 활용하면 표현이 풍부해져요.</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* 학생의 강점 + 필요한 다음 단계 */}
+            <div className="two-col">
+              <div className="col-left">
+                <div className="section-title">⚡ 학생의 강점</div>
+                
+                <div className="strength-item">
+                  <div className="item-icon">✅</div>
+                  <div className="item-text">
+                    <strong>비교 구조를 논리적으로 잘 짰어요</strong><br/>
+                    House와 Home이라는 단어의 의미를 명확하게 구분하고 대조하여 설명했어요.
+                  </div>
+                </div>
+                
+                <div className="strength-item">
+                  <div className="item-icon">✅</div>
+                  <div className="item-text">
+                    <strong>주제와 문단이 일관되게 구성됨</strong><br/>
+                    단순하지 않지만 명확한 구조로 글을 전개했어요.
+                  </div>
+                </div>
+                
+                <div className="strength-item">
+                  <div className="item-icon">✅</div>
+                  <div className="item-text">
+                    <strong>도입에서 독자의 관심을 끄는 문장</strong><br/>
+                    일반적 인식을 언급하며 자연스럽게 주제를 소개했어요.
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-right">
+                <div className="section-title">🎯 앞으로 필요한 다음 단계</div>
+                
+                <div className="next-step-item">
+                  <div className="item-icon">📌</div>
+                  <div className="item-text">
+                    <strong>더 풍부한 구체적 예시 추가</strong><br/>
+                    개념을 설명할 때 실제 경험이나 구체적 사례를 넣으면 좋아요.
+                  </div>
+                </div>
+                
+                <div className="next-step-item">
+                  <div className="item-icon">📌</div>
+                  <div className="item-text">
+                    <strong>문장 길이와 구조의 다양성 확보</strong><br/>
+                    짧은 문장과 긴 문장을 적절히 섞어 리듬감을 만들어보세요.
+                  </div>
+                </div>
+                
+                <div className="next-step-item">
+                  <div className="item-icon">📌</div>
+                  <div className="item-text">
+                    <strong>결론에서 주제 강조 및 확장</strong><br/>
+                    마무리에서 주제를 다시 강조하고 의미를 확장해보세요.
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      );
+    }
+
+
     function App() {
       const [page, setPage] = useState("intro");
       const [loginType, setLoginType] = useState(null);
@@ -647,6 +1997,12 @@
       };
 
       const showToast = msg => { setToast(msg); setTimeout(() => setToast(""), 2000); };
+      const goResult = (item, tab = "original") => {
+        setResultId(item.id);
+        setResultTab(tab);
+        setPage("result");
+        window.scrollTo(0, 0);
+      };
       const goWrite = (item, rw = false) => { 
         setEditId(item.id); 
         setIsRewrite(rw); 
@@ -1476,16 +2832,16 @@
                                 <button onClick={() => goWrite(item, true)} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>고쳐쓰기</button>
                               )}
                               {item.status === "submitted" && item.modifyUsed && (
-                                <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=original`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
+                                <button onClick={() => goResult(item, 'original')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
                               )}
                               {item.status === "done" && (
                                 hasRewrite ? (
                                   <>
-                                    <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=original`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
-                                    <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=rewrite`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>최종 결과서</button>
+                                    <button onClick={() => goResult(item, 'original')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "1.5px solid #2563EB", background: "#fff", color: "#2563EB", whiteSpace: "nowrap" }}>1차 결과서</button>
+                                    <button onClick={() => goResult(item, 'rewrite')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>최종 결과서</button>
                                   </>
                                 ) : (
-                                  <button onClick={() => window.open(`https://daekyo001-result.vercel.app/?id=${item.id}&tab=original`, '_blank')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>결과서 보기</button>
+                                  <button onClick={() => goResult(item, 'original')} style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", border: "none", background: "#2563EB", color: "#fff", whiteSpace: "nowrap" }}>결과서 보기</button>
                                 )
                               )}
                             </div>
@@ -1681,8 +3037,10 @@
       );
 
 
-      // ── RESULT ── (결과서는 별도 파일로 분리됨)
-      // result.html 참조
+      // ── RESULT ── (결과서 화면: 단일 파일로 통합됨)
+      if (page === "result") {
+        return <ResultPage initialTab={resultTab} onBack={() => setPage("home")} />;
+      }
 
 
 

@@ -1942,8 +1942,8 @@
 
 
     function App() {
-      const [page, setPage] = useState("intro");
-      const [loginType, setLoginType] = useState(null);
+      const [page, setPage] = useState("subject");
+      const [loginType, setLoginType] = useState("mdm");
       const [loginTab, setLoginTab] = useState("attendance");
       const [loginInput, setLoginInput] = useState("");
       const [list, setList] = useState(TASK_DATA);
@@ -2438,7 +2438,6 @@
                   <button style={{ flex: 1, padding: "12px", background: "#10B981", color: "#fff", border: "none", borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>A 3세트 →</button>
                 </div>
               </div>
-              <button onClick={() => setPage("login")} style={{ padding: "12px 24px", background: "#fff", border: "1px solid #E5E7EB", borderRadius: 8, fontSize: 14, fontWeight: 600, color: "#6B7280", cursor: "pointer" }}>← 로그인 화면으로</button>
             </div>
           </div>
         );
